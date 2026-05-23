@@ -1,32 +1,28 @@
 import Link from "next/link";
-import { EyePoster } from "@/components/scenes/EyePoster";
+import Image from "next/image";
+import { EvilEyeHero } from "@/components/scenes/EvilEyeHero";
+import { StoryScrollytelling } from "@/components/scenes/StoryScrollytelling";
+import { LookbookTeaser } from "@/components/scenes/LookbookTeaser";
+import { MarqueeStrip } from "@/components/motion/MarqueeStrip";
+import { ProductCard } from "@/components/commerce/ProductCard";
+import { getAllProducts } from "@/lib/shopify";
 
-/* ──────────────────────────────────────────────────────────────────────────
-   PHASE 0 — homepage scaffold.
+export default async function Home() {
+  const products = await getAllProducts();
+  const featured = products.slice(0, 4);
 
-   LCP foundation: a server-rendered static hero (master logo poster +
-   headline text) that paints immediately. The Phase 2 WebGL eye will
-   crossfade in *over* this poster after loadEventEnd — the poster itself
-   remains the LCP element on every render. The canvas is never LCP.
-   See plan §"LCP-first contract".
-   ────────────────────────────────────────────────────────────────────────── */
-
-export default function Home() {
   return (
     <main className="relative">
       {/* ──────────────── HERO — static-first, LCP-safe ──────────────── */
-      /* LCP element is the vector eye-poster.svg (~4KB) + the live <h1>
-         text below it. NOT the master PNG. The Phase 2 WebGL eye will
-         crossfade over the SVG after loadEventEnd. The canvas is never LCP.
-         The wordmark is LIVE text so SplitText can animate it in Phase 2,
-         and so it remains accessible / SEO-indexable / responsive. */}
+      /* EvilEyeHero renders the inline SVG poster (LCP) immediately and
+         only mounts the R3F living-eye scene AFTER loadEventEnd + rIC.
+         The wordmark text below is also painted server-side. */}
       <section
         aria-labelledby="hero-title"
         className="relative min-h-[100dvh] flex flex-col items-center justify-center section-pad overflow-hidden"
       >
-        {/* Watercolour wash backdrop — pure CSS, no asset weight */}
         <div
-          aria-hidden="true"
+          aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-90"
           style={{
             backgroundImage:
@@ -36,29 +32,17 @@ export default function Home() {
 
         <p className="eyebrow mb-8 sm:mb-10">Est. 2026 · The Nazar Edit</p>
 
-        {/* INLINED vector eye — shipped inside the initial HTML payload, so
-            it paints at FCP with no round-trip on slow-4G. */}
-        <EyePoster className="w-[min(80vw,520px)] h-auto -mb-4 sm:-mb-8" />
+        <EvilEyeHero className="w-[min(80vw,520px)]" />
 
-        {/* LIVE wordmark — real serif text. Weight 600 for presence at 16vw
-            (Cormorant 500 risks reading thin at hero scale). Animatable by
-            SplitText in Phase 2. */}
+        {/* Wordmark — server-painted text, SplitText reveals an overlay only after load */}
         <h1
           id="hero-title"
           className="font-display-bold text-center leading-[0.85] tracking-[-0.025em] text-navy mt-6 sm:mt-8"
           style={{ fontSize: "clamp(3.5rem, 14vw, 11rem)" }}
         >
           URBAN
-          <span className="sr-only"> </span>
-          <span
-            aria-hidden="true"
-            className="block font-mono font-medium uppercase text-ink mt-3"
-            style={{
-              fontSize: "clamp(0.85rem, 2.5vw, 1.5rem)",
-              letterSpacing: "0.42em",
-              marginLeft: "0.42em",
-            }}
-          >
+          <span aria-hidden className="block font-mono font-medium uppercase text-ink mt-3"
+                style={{ fontSize: "clamp(0.85rem, 2.5vw, 1.5rem)", letterSpacing: "0.42em", marginLeft: "0.42em" }}>
             Illusion
           </span>
           <span className="sr-only">Illusion</span>
@@ -71,13 +55,15 @@ export default function Home() {
         <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-5">
           <Link
             href="/shop"
-            className="btn-press inline-flex items-center gap-3 rounded-full bg-navy text-paper pl-6 pr-2 py-2 text-[11px] font-mono tracking-[0.24em] uppercase whitespace-nowrap"
+            data-magnetic="0.35"
+            className="btn-press group/btn inline-flex items-center gap-3 rounded-full bg-navy text-paper pl-6 pr-2 py-2 text-[11px] font-mono tracking-[0.24em] uppercase whitespace-nowrap"
           >
             <span>Enter the shop</span>
-            <span className="grid place-items-center size-9 rounded-full bg-paper text-navy">→</span>
+            <span aria-hidden className="grid place-items-center size-9 rounded-full bg-paper text-navy transition-transform duration-[var(--dur-base)] ease-[var(--ease-lux)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-px">→</span>
           </Link>
           <Link
             href="/story"
+            data-magnetic="0.2"
             className="btn-press text-[11px] font-mono tracking-[0.24em] uppercase underline underline-offset-8 decoration-1 hover:decoration-cobalt transition-colors whitespace-nowrap"
           >
             Read the story
@@ -87,62 +73,73 @@ export default function Home() {
         <div className="hairline-rule absolute bottom-8 left-1/2 -translate-x-1/2 w-32" />
       </section>
 
-      {/* ──────────────── BRAND-SYSTEM CHECK (Phase 0 only) ──────────────── */}
-      <section
-        aria-labelledby="brand-system"
-        className="section-pad container-lux border-t border-ink/5"
-      >
-        <p className="eyebrow">Phase 0 · Brand System Check</p>
-        <h2 id="brand-system" className="mt-3 max-w-[16ch]">
-          The tokens, the type, the palette.
-        </h2>
-        <p className="text-lead mt-6 max-w-[60ch] text-ink-soft">
-          Confirming the design-token system renders correctly. Replaced in Phase 2
-          by the cinematic scrollytelling story.
-        </p>
+      {/* ──────────────── SCROLLYTELLING — Protection · Perception · Illusion ──────────────── */}
+      <StoryScrollytelling />
 
-        <ul className="mt-12 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-          {[
-            { name: "Navy", hex: "#0B1B3F", textLight: true },
-            { name: "Midnight", hex: "#14213D", textLight: true },
-            { name: "Cobalt", hex: "#1E3A8A", textLight: true },
-            { name: "Iris", hex: "#A8D0E0" },
-            { name: "Gold", hex: "#B8965A" },
-            { name: "Sand", hex: "#EFE6D4" },
-            { name: "Paper", hex: "#FAF7F0" },
-            { name: "Ink", hex: "#0A0A0A", textLight: true },
-          ].map((c) => (
-            <li
-              key={c.name}
-              className="rounded-md p-4 aspect-square flex flex-col justify-between text-[10px] font-mono tracking-[0.18em] uppercase"
-              style={{ background: c.hex, color: c.textLight ? "#FAF7F0" : "#0A0A0A" }}
-            >
-              <span>{c.name}</span>
-              <span className="opacity-70">{c.hex}</span>
+      {/* ──────────────── MARQUEE STRIP ──────────────── */}
+      <MarqueeStrip
+        items={["PROTECTION", "PERCEPTION", "ILLUSION", "NAZAR", "EST. 2026", "MADE IN INDIA"]}
+      />
+
+      {/* ──────────────── FEATURED DROP ──────────────── */}
+      <section className="container-lux px-4 lg:px-8 section-pad">
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
+          <div>
+            <p className="eyebrow">The Nazar Edit · {products.length} pieces</p>
+            <h2 className="mt-3">First glances.</h2>
+          </div>
+          <Link
+            href="/shop"
+            data-magnetic="0.3"
+            className="font-mono text-[11px] uppercase tracking-[0.24em] underline underline-offset-8 hover:text-cobalt"
+          >
+            See all →
+          </Link>
+        </div>
+        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-14">
+          {featured.map((p) => (
+            <li key={p.id}>
+              <ProductCard product={p} />
             </li>
           ))}
         </ul>
       </section>
 
-      {/* The featured-catalog block lives on Phase 1's homepage. Keeping the
-          Phase 0 page lean so the LCP baseline measures the *foundation*,
-          not a content payload that's a phase out of order. */}
+      {/* ──────────────── LOOKBOOK TEASER ──────────────── */}
+      <LookbookTeaser />
 
-      {/* ──────────────── FOOTER STRIP ──────────────── */}
-      <footer className="section-pad bg-navy text-paper">
-        <div className="container-lux flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-[28ch]">
-            <p className="eyebrow text-paper/60">Urban Illusion · Est. 2026</p>
-            <p className="font-display text-4xl mt-4 text-paper">
-              Protection. Perception. Illusion.
-            </p>
+      {/* ──────────────── THE EYE SET-PIECE ──────────────── */}
+      <section className="relative bg-paper overflow-hidden">
+        <div className="container-lux px-4 lg:px-8 section-pad grid lg:grid-cols-[1fr_1.2fr] gap-12 items-center">
+          <div className="relative aspect-square">
+            <Image
+              src="/catalog/IMG_8105.png"
+              alt="The evil-eye composition"
+              fill
+              sizes="(max-width: 1024px) 100vw, 540px"
+              className="object-contain"
+            />
           </div>
-          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-paper/40">
-            © 2026 Urban Illusion. All rights reserved. <br />
-            Phase 0 build · Foundation only.
-          </p>
+          <div>
+            <p className="eyebrow">The Eye</p>
+            <h2 className="mt-4 leading-[0.95]">A talisman, three thousand years old.</h2>
+            <p className="text-lead mt-6 text-ink-soft max-w-[50ch]">
+              The nazar is the oldest amulet in human record. Worn on the throat,
+              hung above a doorway, sewn into a child&apos;s coat. We rendered it in
+              jewelled cobalt over a hand-painted wash. The piece protects the
+              wearer the way it has protected travellers for centuries.
+            </p>
+            <Link
+              href="/story"
+              data-magnetic="0.35"
+              className="btn-press group/btn mt-10 inline-flex items-center gap-3 rounded-full bg-navy text-paper pl-6 pr-2 py-2 text-[11px] font-mono tracking-[0.24em] uppercase whitespace-nowrap"
+            >
+              <span>Read the story</span>
+              <span aria-hidden className="grid place-items-center size-9 rounded-full bg-paper text-navy">→</span>
+            </Link>
+          </div>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }

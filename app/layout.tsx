@@ -1,26 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/commerce/CartDrawer";
 import { SearchOverlay } from "@/components/commerce/SearchOverlay";
 import { CartHydrator } from "@/components/providers/CartHydrator";
+import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
+import { MagneticCursor } from "@/components/motion/MagneticCursor";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { PageTransition } from "@/components/motion/PageTransition";
+// Preloader intentionally NOT mounted: even as a pure-CSS hairline it kept
+// Lighthouse's LCP measurement window open during its 1.1s animation, pushing
+// DevTools LCP from 1.6s → 3.5s. Aesthetic gain wasn't worth the regression.
+// The component still ships (components/scenes/Preloader.tsx) for future use
+// when we can isolate it from the LCP measurement (e.g., second-visit only,
+// gated on first interaction). Phase 5 may revisit.
 
 /* ─── Display serif (the wordmark / headlines) — SWAPPABLE ─────────────── */
-/* One line to swap the display face once the type sign-off lands.
-   Candidates considered:
-     • Cormorant_Garamond  weight 500  — delicate Garamond, high contrast (current)
-     • Cormorant_Garamond  weight 600  — same face, more presence at 16vw
-     • Fraunces            weight 600  — optical-size axis, modern luxe maison
-
-   Token flows through globals.css → every h1/h2/h3/.font-display.
-   Change ONLY the function call below to swap; everything else stays. */
-const display = Cormorant_Garamond({
+/* One line to swap the display face. Now Fraunces 600 (user prior, prefers
+   the optical-size axis + more presence at 16vw vs Cormorant 500/600's
+   hairlines). Revert to `Cormorant_Garamond({ weight: ["500","600"] })` if
+   the visual review calls back.
+   Token flows through globals.css → every h1/h2/h3/.font-display(-bold). */
+/* Font-display strategy locked to protect LCP:
+   - Geist (body / LCP element)   → swap, preloaded — must arrive early
+   - Fraunces (display)            → optional — never re-paints LCP mid-load
+   - Geist Mono (eyebrow)          → optional + no preload — never blocks CWV */
+const display = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600"],   // 500 today; 600 reserved for hero/wordmark via .font-display-bold
-  display: "swap",
+  weight: "variable",
+  display: "optional",
+  axes: ["opsz"],
+  preload: false,
 });
 
 const body = Geist({
@@ -32,7 +45,8 @@ const body = Geist({
 const mono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
+  preload: false,
 });
 
 /* ─── Metadata ──────────────────────────────────────────────────────────── */
@@ -86,12 +100,17 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} ${mono.variable}`}
     >
       <body className="min-h-dvh flex flex-col bg-paper text-ink">
-        <Header />
-        <CartHydrator />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <ScrollProgress />
+        <SmoothScrollProvider>
+          <Header />
+          <CartHydrator />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </SmoothScrollProvider>
         <CartDrawer />
         <SearchOverlay />
+        <MagneticCursor />
+        <PageTransition />
         {/* Grain overlay — fixed, pointer-events-none, multiply blend.
             Signature printed-paper texture without hurting perf. */}
         <div className="grain-overlay" aria-hidden="true" />
