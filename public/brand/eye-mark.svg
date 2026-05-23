@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Urban Illusion evil-eye mark">
+  <title>Urban Illusion — evil-eye mark</title>
+  <!-- Stippled jewelled disc: concentric rings with subtle dotted pattern -->
+  <defs>
+    <radialGradient id="cobalt" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#1E3A8A"/>
+      <stop offset="80%" stop-color="#0B1B3F"/>
+      <stop offset="100%" stop-color="#0B1B3F"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#FAF7F0"/>
+      <stop offset="60%" stop-color="#A8D0E0"/>
+      <stop offset="100%" stop-color="#5F8DA8"/>
+    </radialGradient>
+    <pattern id="stipple" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="rgba(250,247,240,0.35)"/>
+    </pattern>
+  </defs>
+  <!-- Outer cobalt disc -->
+  <circle cx="100" cy="100" r="92" fill="url(#cobalt)"/>
+  <circle cx="100" cy="100" r="92" fill="url(#stipple)"/>
+  <!-- Pale sand inner ring (matches the jewelled white-pearl ring in the master) -->
+  <circle cx="100" cy="100" r="60" fill="#EFE6D4"/>
+  <circle cx="100" cy="100" r="60" fill="url(#stipple)" opacity="0.4"/>
+  <!-- Cyan iris -->
+  <circle cx="100" cy="100" r="42" fill="url(#iris)"/>
+  <!-- Pupil -->
+  <circle cx="100" cy="100" r="14" fill="#0A0A0A"/>
+  <!-- Highlight catch -->
+  <circle cx="93" cy="93" r="3" fill="#FAF7F0" opacity="0.85"/>
+</svg>

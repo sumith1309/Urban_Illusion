@@ -1,0 +1,14 @@
+Copyright © 2026 Urban Illusion. All rights reserved.
+
+This codebase is the proprietary work product of Urban Illusion. No part of
+this repository — including but not limited to source code, design tokens,
+brand assets, copy, photography, schemas, or documentation — may be copied,
+reproduced, distributed, modified, sublicensed, or used in any form (whether
+for commercial or non-commercial purposes) without the prior express written
+permission of an authorised representative of Urban Illusion.
+
+Original brand reference imagery in /public/catalog and /public/brand belongs
+to Urban Illusion. Third-party open-source dependencies retain their own
+licences as declared in /node_modules/<package>/LICENSE and in /package.json.
+
+For licensing enquiries: contact@urbanillusion.example

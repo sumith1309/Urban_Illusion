@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Crosshair guides">
+  <title>Crosshair guides</title>
+  <g stroke="#0A0A0A" stroke-width="0.8" fill="none" opacity="0.85">
+    <!-- One horizontal rule, two vertical rules — echoes the master logo's grid -->
+    <line x1="0"   y1="200" x2="180" y2="200"/>
+    <line x1="220" y1="0"   x2="220" y2="400"/>
+    <line x1="340" y1="0"   x2="340" y2="400"/>
+    <!-- Small dot accent at the top of the right vertical -->
+    <circle cx="340" cy="60" r="4.5" fill="#0B1B3F" stroke="none"/>
+  </g>
+</svg>

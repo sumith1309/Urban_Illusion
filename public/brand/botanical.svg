@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 320" role="img" aria-label="Botanical sprig">
+  <title>Botanical sprig</title>
+  <g fill="none" stroke="#0A0A0A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main stem -->
+    <path d="M80 310 C 78 240, 82 170, 78 100 C 76 60, 84 30, 90 10"/>
+    <!-- Leaves: alternating ovals along the stem -->
+    <path d="M78 250 C 50 245, 38 230, 36 210 C 50 215, 70 225, 78 245 Z"/>
+    <path d="M80 220 C 108 218, 122 205, 126 188 C 110 188, 92 198, 80 215 Z"/>
+    <path d="M78 185 C 50 182, 38 168, 36 148 C 52 152, 70 162, 78 180 Z"/>
+    <path d="M80 158 C 108 156, 122 142, 124 124 C 108 126, 90 136, 80 152 Z"/>
+    <path d="M78 124 C 54 122, 42 110, 38 92 C 54 94, 70 102, 78 118 Z"/>
+    <path d="M80 98 C 104 96, 116 84, 118 68 C 104 70, 90 80, 80 92 Z"/>
+    <path d="M82 72 C 100 70, 110 58, 110 44 C 98 46, 88 54, 82 66 Z"/>
+    <!-- Leaf veins -->
+    <path d="M78 245 C 60 240, 48 232, 40 220" stroke-width="0.7"/>
+    <path d="M80 215 C 96 212, 108 204, 118 194" stroke-width="0.7"/>
+    <path d="M78 180 C 60 176, 48 168, 42 156" stroke-width="0.7"/>
+  </g>
+</svg>

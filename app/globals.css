@@ -1,26 +1,211 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   URBAN ILLUSION — Design Token System
+   Single source of truth for colour, type, spacing, motion. Tailwind v4 reads
+   `@theme` directly. Do NOT introduce ad-hoc hex values in components.
+   ========================================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* — Brand palette — */
+  --ui-navy:      #0B1B3F;
+  --ui-midnight:  #14213D;
+  --ui-cobalt:    #1E3A8A;
+  --ui-iris:      #A8D0E0;
+  --ui-gold:      #B8965A;
+  --ui-gold-soft: #D9C49A;
+  --ui-sand:      #EFE6D4;
+  --ui-paper:     #FAF7F0;   /* DEFAULT page background — NEVER pure white */
+  --ui-ink:       #0A0A0A;
+  --ui-ink-soft:  #2A2A2A;
+
+  /* — Motion — */
+  --ease-lux:        cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-out-soft:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-deep:    cubic-bezier(0.7, 0, 0.84, 0);
+  --dur-fast:        180ms;
+  --dur-base:        320ms;
+  --dur-slow:        720ms;
+  --dur-cinematic:   1400ms;
+
+  /* — Radii — */
+  --radius-xs: 4px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* — Premium shadows (warm, diffused — never harsh) — */
+  --shadow-soft:  0 2px 10px -2px rgba(11, 27, 63, 0.06), 0 20px 40px -20px rgba(11, 27, 63, 0.08);
+  --shadow-card:  0 1px 2px rgba(11, 27, 63, 0.04), 0 24px 60px -28px rgba(11, 27, 63, 0.18);
+  --shadow-float: 0 30px 80px -30px rgba(11, 27, 63, 0.28);
+  --shadow-inner-hairline: inset 0 1px 1px rgba(255, 255, 255, 0.5);
+
+  /* — Macro section padding (Awwwards-tier breathing room) — */
+  --pad-section-y: clamp(5rem, 10vw, 10rem);
+  --pad-section-x: clamp(1.25rem, 4vw, 4rem);
+
+  /* — Z-index discipline (no arbitrary z-9999) — */
+  --z-nav:      40;
+  --z-overlay:  50;
+  --z-modal:    60;
+  --z-cursor:   70;
+  --z-toast:    80;
+  --z-grain:    90;
+
+  /* — Fluid type scale — */
+  --fs-eyebrow: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  --fs-body:    clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
+  --fs-lead:    clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --fs-h4:      clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --fs-h3:      clamp(2rem, 1.5rem + 2vw, 3rem);
+  --fs-h2:      clamp(2.75rem, 2rem + 3vw, 5rem);
+  --fs-h1:      clamp(3.5rem, 2.5rem + 5vw, 8rem);
+  --fs-hero:    clamp(4rem, 3rem + 12vw, 18rem);
 }
 
+/* — Tailwind v4 theme bridge: makes tokens available as text-, bg-, etc. — */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy:      var(--ui-navy);
+  --color-midnight:  var(--ui-midnight);
+  --color-cobalt:    var(--ui-cobalt);
+  --color-iris:      var(--ui-iris);
+  --color-gold:      var(--ui-gold);
+  --color-gold-soft: var(--ui-gold-soft);
+  --color-sand:      var(--ui-sand);
+  --color-paper:     var(--ui-paper);
+  --color-ink:       var(--ui-ink);
+  --color-ink-soft:  var(--ui-ink-soft);
+
+  --font-display: var(--font-display);
+  --font-body:    var(--font-body);
+  --font-mono:    var(--font-mono);
+
+  --ease-lux:      var(--ease-lux);
+  --ease-out-soft: var(--ease-out-soft);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================================================
+   BASE
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--ui-paper);
+  color: var(--ui-ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto; /* Lenis owns scroll once mounted */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ui-paper);
+  color: var(--ui-ink);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  line-height: 1.55;
+  font-size: var(--fs-body);
+}
+
+/* Headlines use display serif by default */
+h1, h2, h3, h4 {
+  font-family: var(--font-display), "Cormorant Garamond", "Times New Roman", serif;
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--ui-ink);
+}
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
+
+/* The signature eyebrow label style — used on every section */
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ui-ink-soft);
+}
+
+/* Selection — branded */
+::selection {
+  background: var(--ui-cobalt);
+  color: var(--ui-paper);
+}
+
+/* Focus rings — accessible + on-brand */
+:focus-visible {
+  outline: 2px solid var(--ui-cobalt);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* =========================================================================
+   GRAIN OVERLAY — fixed, pointer-events-none. Tactile printed-paper feel.
+   Per lnx-high-end-visual-design: noise lives only on fixed pseudo-elements.
+   ========================================================================= */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.65 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* =========================================================================
+   UTILITIES
+   ========================================================================= */
+.font-display { font-family: var(--font-display), "Cormorant Garamond", serif; }
+.font-body    { font-family: var(--font-body), system-ui, sans-serif; }
+.font-mono    { font-family: var(--font-mono), ui-monospace, monospace; }
+
+.text-hero  { font-size: var(--fs-hero); line-height: 0.86; letter-spacing: -0.035em; }
+.text-lead  { font-size: var(--fs-lead); }
+
+.section-pad   { padding-block: var(--pad-section-y); padding-inline: var(--pad-section-x); }
+.container-lux { max-width: 1600px; margin-inline: auto; }
+
+.hairline-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(11, 27, 63, 0.18), transparent);
+}
+.hairline-rule--gold {
+  background: linear-gradient(90deg, transparent, var(--ui-gold), transparent);
+}
+
+/* Magnetic / press affordance for primary CTAs */
+.btn-press { transition: transform var(--dur-base) var(--ease-lux); }
+.btn-press:active { transform: scale(0.97); }
+
+/* Marquee — used on Phase 2 strip */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-x 40s linear infinite;
+  will-change: transform;
+}
+
+/* =========================================================================
+   REDUCED MOTION — global escape hatch
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track { animation: none !important; }
 }

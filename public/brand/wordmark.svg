@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" role="img" aria-label="Urban Illusion">
+  <title>Urban Illusion</title>
+  <defs>
+    <style>
+      .urban { font: 500 168px "Cormorant Garamond", "Times New Roman", serif; letter-spacing: -2px; fill: #0B1B3F; }
+      .illusion { font: 500 28px "Geist Mono", ui-monospace, monospace; letter-spacing: 14px; fill: #0B1B3F; }
+    </style>
+  </defs>
+  <text x="300" y="170" text-anchor="middle" class="urban">URBAN</text>
+  <text x="300" y="215" text-anchor="middle" class="illusion">ILLUSION</text>
+</svg>
