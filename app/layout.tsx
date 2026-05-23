@@ -9,7 +9,9 @@ import "./globals.css";
 const display = Cormorant_Garamond({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  // Single weight = single woff2 = ~30KB instead of 4× that. Phase 2 can add
+  // weight 600 if the cinematic hero needs more presence.
+  weight: ["500"],
   display: "swap",
 });
 

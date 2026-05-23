@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { getAllProducts } from "@/lib/shopify";
-import { formatPrice } from "@/lib/utils";
+import { EyePoster } from "@/components/scenes/EyePoster";
 
 /* ──────────────────────────────────────────────────────────────────────────
    PHASE 0 — homepage scaffold.
@@ -13,18 +11,20 @@ import { formatPrice } from "@/lib/utils";
    See plan §"LCP-first contract".
    ────────────────────────────────────────────────────────────────────────── */
 
-export default async function Home() {
-  const products = await getAllProducts();
-  const featured = products.slice(0, 4);
-
+export default function Home() {
   return (
     <main className="relative">
-      {/* ──────────────── HERO — static-first, LCP-safe ──────────────── */}
+      {/* ──────────────── HERO — static-first, LCP-safe ──────────────── */
+      /* LCP element is the vector eye-poster.svg (~4KB) + the live <h1>
+         text below it. NOT the master PNG. The Phase 2 WebGL eye will
+         crossfade over the SVG after loadEventEnd. The canvas is never LCP.
+         The wordmark is LIVE text so SplitText can animate it in Phase 2,
+         and so it remains accessible / SEO-indexable / responsive. */}
       <section
         aria-labelledby="hero-title"
         className="relative min-h-[100dvh] flex flex-col items-center justify-center section-pad overflow-hidden"
       >
-        {/* Watercolour wash backdrop — decorative */}
+        {/* Watercolour wash backdrop — pure CSS, no asset weight */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-90"
@@ -34,40 +34,49 @@ export default async function Home() {
           }}
         />
 
-        <p className="eyebrow mb-10">Est. 2026 · The Nazar Edit</p>
+        <p className="eyebrow mb-8 sm:mb-10">Est. 2026 · The Nazar Edit</p>
 
-        {/* Master logo as the LCP element. `priority` preloads & decodes
-            synchronously. Aspect ratio reserved so no CLS. */}
-        <div className="relative w-[min(86vw,640px)] aspect-[5/6]">
-          <Image
-            src="/brand/logo-master.png"
-            alt="Urban Illusion — the jewelled evil-eye flagship logo"
-            fill
-            priority
-            sizes="(max-width: 768px) 86vw, 640px"
-            className="object-contain"
-          />
-        </div>
+        {/* INLINED vector eye — shipped inside the initial HTML payload, so
+            it paints at FCP with no round-trip on slow-4G. */}
+        <EyePoster className="w-[min(80vw,520px)] h-auto -mb-4 sm:-mb-8" />
 
-        <h1 id="hero-title" className="sr-only">
-          Urban Illusion — Protection. Perception. Illusion.
+        {/* LIVE wordmark — real Cormorant text. Animatable by SplitText in Phase 2. */}
+        <h1
+          id="hero-title"
+          className="font-display text-center leading-[0.85] tracking-[-0.025em] text-navy mt-6 sm:mt-8"
+          style={{ fontSize: "clamp(3.5rem, 14vw, 11rem)" }}
+        >
+          URBAN
+          <span className="sr-only"> </span>
+          <span
+            aria-hidden="true"
+            className="block font-mono font-medium uppercase text-ink mt-3"
+            style={{
+              fontSize: "clamp(0.85rem, 2.5vw, 1.5rem)",
+              letterSpacing: "0.42em",
+              marginLeft: "0.42em",
+            }}
+          >
+            Illusion
+          </span>
+          <span className="sr-only">Illusion</span>
         </h1>
 
-        <p className="text-lead font-body mt-12 max-w-[36ch] text-center text-ink-soft">
+        <p className="text-lead font-body mt-10 max-w-[32ch] text-center text-ink-soft px-4">
           A jewelled evil-eye amulet, rendered as ready-to-wear. Limited drops.
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-5">
           <Link
             href="/shop"
-            className="btn-press inline-flex items-center gap-3 rounded-full bg-navy text-paper pl-6 pr-2 py-2 text-sm font-mono tracking-[0.24em] uppercase"
+            className="btn-press inline-flex items-center gap-3 rounded-full bg-navy text-paper pl-6 pr-2 py-2 text-[11px] font-mono tracking-[0.24em] uppercase whitespace-nowrap"
           >
             <span>Enter the shop</span>
             <span className="grid place-items-center size-9 rounded-full bg-paper text-navy">→</span>
           </Link>
           <Link
             href="/story"
-            className="btn-press text-sm font-mono tracking-[0.24em] uppercase underline underline-offset-8 decoration-1 hover:decoration-cobalt transition-colors"
+            className="btn-press text-[11px] font-mono tracking-[0.24em] uppercase underline underline-offset-8 decoration-1 hover:decoration-cobalt transition-colors whitespace-nowrap"
           >
             Read the story
           </Link>
@@ -113,48 +122,9 @@ export default async function Home() {
         </ul>
       </section>
 
-      {/* ──────────────── SEEDED CATALOG (Phase 1 will replace with PLP) ──────────────── */}
-      <section
-        aria-labelledby="featured"
-        className="section-pad container-lux border-t border-ink/5"
-      >
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <p className="eyebrow">The Nazar Edit · {products.length} pieces</p>
-            <h2 id="featured" className="mt-3">First glances.</h2>
-          </div>
-          <Link
-            href="/shop"
-            className="text-sm font-mono tracking-[0.24em] uppercase underline underline-offset-8 decoration-1 hover:decoration-cobalt transition-colors"
-          >
-            See all →
-          </Link>
-        </div>
-
-        <ul className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
-          {featured.map((p) => (
-            <li key={p.id} className="group">
-              <Link href={`/shop/${p.handle}`} className="block">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-sand/30">
-                  <Image
-                    src={p.media[0].url}
-                    alt={p.media[0].altText}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.2,0.7,0.1,1)] group-hover:scale-[1.04]"
-                  />
-                </div>
-                <div className="mt-4 flex items-baseline justify-between gap-3">
-                  <h3 className="font-display text-xl leading-tight">{p.title}</h3>
-                  <span className="font-mono text-xs tracking-[0.18em]">
-                    {formatPrice(p.priceRange.min.amount, "INR")}
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* The featured-catalog block lives on Phase 1's homepage. Keeping the
+          Phase 0 page lean so the LCP baseline measures the *foundation*,
+          not a content payload that's a phase out of order. */}
 
       {/* ──────────────── FOOTER STRIP ──────────────── */}
       <footer className="section-pad bg-navy text-paper">
