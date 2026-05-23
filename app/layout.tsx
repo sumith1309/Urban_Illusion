@@ -2,15 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
-/* ─── Fonts ─────────────────────────────────────────────────────────────── */
-/* All SIL OFL / free for commercial use. Loaded via next/font/google with
-   automatic CLS-safe size-adjust metrics override. No paid font files in repo. */
-
+/* `display: swap` + default preloads kept FCP at 0.8s on simulated slow-4G;
+   `preload:false` regressed FCP to 1.5s (fonts discovered late) so reverted.
+   Cormorant trimmed to weight 500 only — ~1 woff2 instead of 4. */
 const display = Cormorant_Garamond({
   variable: "--font-display",
   subsets: ["latin"],
-  // Single weight = single woff2 = ~30KB instead of 4× that. Phase 2 can add
-  // weight 600 if the cinematic hero needs more presence.
   weight: ["500"],
   display: "swap",
 });
