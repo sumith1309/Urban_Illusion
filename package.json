@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "perf": "node ./scripts/perf.mjs",
+    "perf:ci": "lhci autorun"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
