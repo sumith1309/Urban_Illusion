@@ -1,22 +1,24 @@
-import Link from "next/link";
+import { getAllProducts } from "@/lib/shopify";
+import { PLPGrid } from "@/components/commerce/PLPGrid";
 
 export const metadata = { title: "Shop" };
 
-export default function ShopPlaceholder() {
+export default async function ShopPage() {
+  const products = await getAllProducts();
+
   return (
-    <main className="section-pad container-lux min-h-[100dvh] flex flex-col justify-center">
-      <p className="eyebrow">Phase 1 · Coming next</p>
-      <h1 className="mt-4 max-w-[16ch]">The full shop opens at Phase 1.</h1>
-      <p className="text-lead mt-6 max-w-[60ch] text-ink-soft">
-        Product listing, filters, quick-view, and cart drawer land in the next
-        commit. For now, the foundation is set.
-      </p>
-      <Link
-        href="/"
-        className="mt-12 inline-flex items-center gap-2 font-mono text-xs tracking-[0.24em] uppercase underline underline-offset-8"
-      >
-        ← Back home
-      </Link>
+    <main className="pt-24 lg:pt-28 bg-paper">
+      {/* Editorial collection header */}
+      <section className="section-pad pt-12 lg:pt-16 pb-0 container-lux">
+        <p className="eyebrow">All pieces · {products.length}</p>
+        <h1 className="mt-3 max-w-[20ch]">The shop.</h1>
+        <p className="text-lead mt-6 max-w-[58ch] text-ink-soft">
+          Limited drops, hand-finished. Every piece carries the eye — printed,
+          embroidered, or rendered as the original amulet itself.
+        </p>
+      </section>
+
+      <PLPGrid products={products} />
     </main>
   );
 }

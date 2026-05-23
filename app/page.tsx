@@ -40,10 +40,12 @@ export default function Home() {
             it paints at FCP with no round-trip on slow-4G. */}
         <EyePoster className="w-[min(80vw,520px)] h-auto -mb-4 sm:-mb-8" />
 
-        {/* LIVE wordmark — real Cormorant text. Animatable by SplitText in Phase 2. */}
+        {/* LIVE wordmark — real serif text. Weight 600 for presence at 16vw
+            (Cormorant 500 risks reading thin at hero scale). Animatable by
+            SplitText in Phase 2. */}
         <h1
           id="hero-title"
-          className="font-display text-center leading-[0.85] tracking-[-0.025em] text-navy mt-6 sm:mt-8"
+          className="font-display-bold text-center leading-[0.85] tracking-[-0.025em] text-navy mt-6 sm:mt-8"
           style={{ fontSize: "clamp(3.5rem, 14vw, 11rem)" }}
         >
           URBAN
