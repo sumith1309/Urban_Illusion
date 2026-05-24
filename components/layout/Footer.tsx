@@ -24,7 +24,7 @@ const COLS = [
     links: [
       { label: "Shipping & returns", href: "/support/shipping" },
       { label: "Size guide", href: "/support/size-guide" },
-      { label: "Contact", href: "/support/contact" },
+      { label: "WhatsApp", href: "https://wa.me/917013436805" },
       { label: "FAQ", href: "/support/faq" },
     ],
   },
@@ -67,18 +67,64 @@ export function Footer() {
           <p className="mt-6 text-paper/60 text-sm max-w-[28ch]">
             A jewelled amulet rendered as ready-to-wear. Hand-finished in small batches.
           </p>
+
+          {/* Direct line */}
+          <div className="mt-8 pt-6 border-t border-paper/10 space-y-3">
+            <a
+              href="tel:+917013436805"
+              className="group flex items-center gap-3 text-paper/85 hover:text-paper transition-colors"
+            >
+              <span
+                className="font-mono text-[10px] uppercase tracking-[0.28em]"
+                style={{ color: "rgba(217, 196, 154, 0.9)" }}
+              >
+                Call
+              </span>
+              <span className="h-px w-6 bg-paper/25 group-hover:bg-paper/60 transition-colors" />
+              <span className="font-mono text-[13px] tracking-wider">+91 70134 36805</span>
+            </a>
+            <a
+              href="https://instagram.com/urbanillusion7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 text-paper/85 hover:text-paper transition-colors"
+            >
+              <span
+                className="font-mono text-[10px] uppercase tracking-[0.28em]"
+                style={{ color: "rgba(217, 196, 154, 0.9)" }}
+              >
+                Instagram
+              </span>
+              <span className="h-px w-6 bg-paper/25 group-hover:bg-paper/60 transition-colors" />
+              <span className="font-mono text-[13px] tracking-wider">@urbanillusion7</span>
+            </a>
+          </div>
         </div>
         {COLS.map((c) => (
           <nav key={c.title}>
             <p className="eyebrow text-paper/60 mb-4">{c.title}</p>
             <ul className="space-y-2.5">
-              {c.links.map((l) => (
-                <li key={l.label}>
-                  <Link href={l.href} className="text-paper/80 hover:text-paper text-sm">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
+              {c.links.map((l) => {
+                const isExternal = l.href.startsWith("http");
+                return (
+                  <li key={l.label}>
+                    {isExternal ? (
+                      <a
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-paper/80 hover:text-paper text-sm"
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link href={l.href} className="text-paper/80 hover:text-paper text-sm">
+                        {l.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         ))}
