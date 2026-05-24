@@ -2,10 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Eye } from "lucide-react";
+import { Eye, Heart } from "lucide-react";
 import { Price } from "@/components/ui/Price";
 import { Badge } from "@/components/ui/Badge";
 import { Swatch } from "@/components/ui/Swatch";
+import { useWishlist } from "@/store/wishlist";
 import type { Product } from "@/lib/shopify/types";
 
 /* Editorial product card:
@@ -22,6 +23,8 @@ export function ProductCard({
   onQuickView?: (p: Product) => void;
 }) {
   const [hovered, setHovered] = useState(false);
+  const liked = useWishlist((s) => s.items.some((i) => i.id === product.id));
+  const toggleLike = useWishlist((s) => s.toggle);
   const colours = Array.from(
     new Map(product.variants.map((v) => [v.color, v.colorHex] as const)).entries(),
   );
@@ -69,6 +72,24 @@ export function ProductCard({
             style={{ opacity: hovered ? 1 : 0 }}
             aria-hidden={!hovered}
           />
+
+          {/* Like (wishlist) affordance — always tappable, gentle when idle */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              toggleLike(product);
+            }}
+            aria-label={liked ? `Remove ${product.title} from wishlist` : `Add ${product.title} to wishlist`}
+            aria-pressed={liked}
+            className={`absolute left-3 top-3 z-10 grid place-items-center size-10 rounded-full bg-paper/90 backdrop-blur-sm transition-[opacity,color] duration-[var(--dur-base)] ease-[var(--ease-lux)] ${liked ? "text-cobalt opacity-100" : hovered ? "text-navy opacity-100" : "text-navy opacity-0 pointer-events-none"}`}
+          >
+            <Heart
+              className="size-4"
+              strokeWidth={1.4}
+              fill={liked ? "currentColor" : "none"}
+            />
+          </button>
 
           {/* Quick-view affordance */}
           {onQuickView && (

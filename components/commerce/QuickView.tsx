@@ -3,11 +3,12 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Heart, X } from "lucide-react";
 import type { Product } from "@/lib/shopify/types";
 import { Price } from "@/components/ui/Price";
 import { Swatch } from "@/components/ui/Swatch";
 import { AddToCart } from "@/components/commerce/AddToCart";
+import { useWishlist } from "@/store/wishlist";
 
 export function QuickView({
   product,
@@ -18,6 +19,8 @@ export function QuickView({
 }) {
   const [colour, setColour] = useState<string | undefined>(undefined);
   const [size, setSize] = useState<string | undefined>(undefined);
+  const liked = useWishlist((s) => (product ? s.items.some((i) => i.id === product.id) : false));
+  const toggleLike = useWishlist((s) => s.toggle);
 
   const colours = product
     ? Array.from(
@@ -115,9 +118,24 @@ export function QuickView({
                 )}
 
                 <div className="mt-auto pt-2 space-y-3">
-                  {variant && (
-                    <AddToCart product={product} variant={variant} className="w-full justify-between" />
-                  )}
+                  <div className="flex items-stretch gap-2">
+                    {variant && (
+                      <AddToCart product={product} variant={variant} className="flex-1 justify-between" />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => toggleLike(product)}
+                      aria-pressed={liked}
+                      aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+                      className={`grid place-items-center size-12 rounded-full border transition-colors ${liked ? "border-cobalt text-cobalt" : "border-ink/20 text-ink hover:border-ink/40"}`}
+                    >
+                      <Heart
+                        className="size-5"
+                        strokeWidth={1.4}
+                        fill={liked ? "currentColor" : "none"}
+                      />
+                    </button>
+                  </div>
                   <Link
                     href={`/shop/${product.handle}`}
                     className="block text-center font-mono text-[11px] uppercase tracking-[0.24em] underline underline-offset-8 hover:text-cobalt"

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Search, User, Heart, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
+import { useWishlist } from "@/store/wishlist";
 import { useUI } from "@/store/ui";
 import { IconButton } from "@/components/ui/IconButton";
 import { MegaMenu } from "@/components/layout/MegaMenu";
@@ -20,8 +21,10 @@ export function Header() {
   const [lastY, setLastY] = useState(0);
 
   const itemCount = useCart((s) => s.itemCount());
+  const wishlistCount = useWishlist((s) => s.items.length);
   const openSearch = useUI((s) => s.openSearch);
   const openCart = useUI((s) => s.openCart);
+  const openWishlist = useUI((s) => s.openWishlist);
 
   useEffect(() => {
     let ticking = false;
@@ -84,11 +87,31 @@ export function Header() {
           <IconButton srLabel="Search" onClick={openSearch}>
             <Search className="size-5" strokeWidth={1.4} />
           </IconButton>
-          <IconButton srLabel="Account" className="hidden sm:inline-grid">
+          <Link
+            href="/account"
+            aria-label="Account"
+            className="relative hidden sm:inline-grid place-items-center size-11 rounded-full text-current hover:text-cobalt transition-colors"
+          >
             <User className="size-5" strokeWidth={1.4} />
-          </IconButton>
-          <IconButton srLabel="Wishlist" className="hidden sm:inline-grid">
-            <Heart className="size-5" strokeWidth={1.4} />
+          </Link>
+          <IconButton
+            srLabel={`Wishlist (${wishlistCount})`}
+            onClick={openWishlist}
+            className="hidden sm:inline-grid"
+          >
+            <Heart
+              className="size-5"
+              strokeWidth={1.4}
+              fill={wishlistCount > 0 ? "currentColor" : "none"}
+            />
+            {wishlistCount > 0 && (
+              <span
+                className="absolute top-0 right-0 grid place-items-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-cobalt text-paper font-mono text-[10px] tracking-normal leading-none"
+                aria-hidden
+              >
+                {wishlistCount}
+              </span>
+            )}
           </IconButton>
           <IconButton srLabel={`Cart (${itemCount})`} onClick={openCart} id="cart-icon-target">
             <ShoppingBag className="size-5" strokeWidth={1.4} />

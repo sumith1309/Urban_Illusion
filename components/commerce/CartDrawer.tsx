@@ -179,17 +179,20 @@ export function CartDrawer() {
                 </Button>
               </Dialog.Close>
               <div className="flex items-center justify-center gap-3 pt-1">
-                <button className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/40 hover:text-ink">
-                  Apple Pay
-                </button>
-                <span className="text-ink/20">·</span>
-                <button className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/40 hover:text-ink">
-                  Google Pay
-                </button>
-                <span className="text-ink/20">·</span>
-                <button className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/40 hover:text-ink">
-                  Shop Pay
-                </button>
+                {(["Apple Pay", "Google Pay", "Shop Pay"] as const).map((label, i) => (
+                  <span key={label} className="contents">
+                    {i > 0 && <span className="text-ink/20">·</span>}
+                    <Dialog.Close asChild>
+                      <Link
+                        href="/checkout"
+                        aria-label={`Express checkout with ${label}`}
+                        className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/40 hover:text-ink"
+                      >
+                        {label}
+                      </Link>
+                    </Dialog.Close>
+                  </span>
+                ))}
               </div>
             </div>
           )}

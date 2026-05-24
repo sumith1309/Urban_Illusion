@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Swatch } from "@/components/ui/Swatch";
 import { AddToCart } from "@/components/commerce/AddToCart";
@@ -57,12 +58,12 @@ export function VariantSelector({ product }: { product: Product }) {
         <div>
           <div className="flex items-baseline justify-between mb-3">
             <p className="eyebrow">Size · {size}</p>
-            <button
-              type="button"
+            <Link
+              href="/support/size-guide"
               className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft underline underline-offset-4 hover:text-ink"
             >
               Size guide
-            </button>
+            </Link>
           </div>
           <div className="flex flex-wrap gap-2">
             {allSizes.map((s) => {

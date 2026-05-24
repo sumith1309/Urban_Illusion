@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/commerce/CartDrawer";
+import { WishlistDrawer } from "@/components/commerce/WishlistDrawer";
 import { SearchOverlay } from "@/components/commerce/SearchOverlay";
 import { CartHydrator } from "@/components/providers/CartHydrator";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
@@ -108,6 +109,7 @@ export default function RootLayout({
           <Footer />
         </SmoothScrollProvider>
         <CartDrawer />
+        <WishlistDrawer />
         <SearchOverlay />
         <MagneticCursor />
         <PageTransition />
