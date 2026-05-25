@@ -29,6 +29,7 @@ const variants = (
   basePrice: number,
   sizes: string[] = STD_SIZES,
   invPerVariant = 8,
+  compareAtPrice?: number,
 ) =>
   colors.flatMap((c) =>
     sizes.map((s) => ({
@@ -39,6 +40,7 @@ const variants = (
       colorHex: c.hex,
       sku: `UI-${product.toUpperCase()}-${c.name.slice(0, 3).toUpperCase()}-${s}`,
       price: INR(basePrice),
+      ...(compareAtPrice !== undefined && { compareAtPrice: INR(compareAtPrice) }),
       available: true,
       inventoryQty: invPerVariant,
     })),
@@ -336,6 +338,123 @@ export const PRODUCTS: Product[] = [
     },
     seo: { title: "Nazar Beaded Bracelet", description: "The literal evil-eye amulet." },
   },
+
+  /* ── Launch Drop — ₹599 sale line ── */
+  {
+    id: "urban-illusion-logo-tee",
+    handle: "urban-illusion-logo-tee",
+    title: "Urban Illusion Logo Tee",
+    description:
+      "The signature evil-eye placed above the Urban Illusion wordmark, set in the house font. A cleaner, statement piece for everyday wear. Drop-shoulder oversize fit.",
+    status: "active",
+    tags: ["tee", "logo", "nazar", "launch-drop"],
+    collections: ["the-nazar-edit", "new-in", "best-sellers"],
+    badges: ["drop", "new"],
+    media: [
+      mk("/catalog/IMG_8105.png", "Urban Illusion Logo Tee — evil eye with brand wordmark"),
+    ],
+    variants: variants(
+      "ui-logo",
+      [
+        { name: "Cream", hex: "#FAF7F0" },
+        { name: "Charcoal", hex: "#1A1A1A" },
+      ],
+      599,
+      STD_SIZES,
+      12,
+      799,
+    ),
+    priceRange: { min: INR(599), max: INR(599) },
+    metafields: {
+      story:
+        "The eye and the name, in one piece. Set in the same custom serif used on every Urban Illusion mark, with the nazar resting above. The brand, signed by the wearer.",
+      materials: ["100% cotton", "220gsm jersey", "Water-based print"],
+      care: ["Cold wash inside out", "Tumble dry low", "Do not iron print"],
+      fit: "Oversized, drop shoulder",
+      origin: "Made in India",
+    },
+    seo: {
+      title: "Urban Illusion Logo Tee — Evil Eye + Wordmark",
+      description: "The signature evil-eye over the Urban Illusion wordmark. Oversized fit. Launch price ₹599.",
+    },
+  },
+  {
+    id: "evil-eye-oversized-tee",
+    handle: "evil-eye-oversized-tee",
+    title: "Evil Eye Oversized Tee",
+    description:
+      "The jewelled evil-eye printed front and centre on a heavyweight oversized tee. Boxy hem, drop shoulder, room to move.",
+    status: "active",
+    tags: ["tee", "nazar", "oversized", "launch-drop"],
+    collections: ["the-nazar-edit", "new-in", "best-sellers"],
+    badges: ["drop", "new"],
+    media: [
+      mk("/catalog/IMG_8095.png", "Evil Eye Oversized Tee — front"),
+      mk("/catalog/IMG_8099.png", "Evil Eye Oversized Tee — worn"),
+    ],
+    variants: variants(
+      "ee-oversized",
+      [
+        { name: "Cream", hex: "#FAF7F0" },
+        { name: "Black", hex: "#0E0E0E" },
+      ],
+      599,
+      STD_SIZES,
+      15,
+      799,
+    ),
+    priceRange: { min: INR(599), max: INR(599) },
+    metafields: {
+      story:
+        "The oldest amulet, sized for everyday. The print sits centred so the eye meets the world before you do.",
+      materials: ["100% cotton", "220gsm jersey", "Water-based print"],
+      care: ["Cold wash inside out", "Tumble dry low", "Do not iron print"],
+      fit: "Oversized, drop shoulder",
+      origin: "Made in India",
+    },
+    seo: {
+      title: "Evil Eye Oversized Tee",
+      description: "Heavyweight oversized tee with the signature evil-eye print. Launch price ₹599.",
+    },
+  },
+  {
+    id: "evil-eye-acid-wash-oversized-tee",
+    handle: "evil-eye-acid-wash-oversized-tee",
+    title: "Evil Eye Acid Wash Oversized Tee",
+    description:
+      "Stone-washed mineral black with the jewelled evil-eye printed front. Each piece washes differently — no two are identical. Soft, lived-in hand.",
+    status: "active",
+    tags: ["tee", "nazar", "acid-wash", "oversized", "launch-drop"],
+    collections: ["the-nazar-edit", "new-in", "best-sellers"],
+    badges: ["drop", "new"],
+    media: [
+      mk("/catalog/PHOTO-2026-05-23-16-33-32.jpg", "Evil Eye Acid Wash Oversized Tee — front"),
+      mk("/catalog/IMG_8752.png", "Evil Eye Acid Wash Oversized Tee — worn"),
+    ],
+    variants: variants(
+      "ee-acid-oversized",
+      [
+        { name: "Mineral Black", hex: "#1F1F1F" },
+      ],
+      599,
+      STD_SIZES,
+      10,
+      799,
+    ),
+    priceRange: { min: INR(599), max: INR(599) },
+    metafields: {
+      story:
+        "Mineral-washed by hand in small batches. The wash deepens with wear, the eye stays watching.",
+      materials: ["100% cotton", "220gsm jersey", "Acid mineral wash", "Water-based print"],
+      care: ["Cold wash with similar tones", "Air dry", "Do not iron print"],
+      fit: "Oversized, drop shoulder",
+      origin: "Made in India",
+    },
+    seo: {
+      title: "Evil Eye Acid Wash Oversized Tee",
+      description: "Hand-washed mineral black oversized tee with the evil-eye print. Launch price ₹599.",
+    },
+  },
 ];
 
 /* ─── Collections ──────────────────────────────────────────────────────── */
@@ -348,6 +467,9 @@ export const COLLECTIONS: Collection[] = [
     description:
       "The flagship capsule. Every piece carries the eye — printed, embroidered, or rendered as the original amulet itself.",
     productHandles: [
+      "urban-illusion-logo-tee",
+      "evil-eye-oversized-tee",
+      "evil-eye-acid-wash-oversized-tee",
       "nazar-oversize-tee",
       "nazar-acid-wash-tee",
       "cobalt-watercolour-tee",
@@ -363,7 +485,15 @@ export const COLLECTIONS: Collection[] = [
     handle: "new-in",
     title: "New In",
     description: "Just landed.",
-    productHandles: ["nazar-oversize-tee", "cobalt-watercolour-tee", "gaze-hoodie", "nazar-beaded-bracelet"],
+    productHandles: [
+      "urban-illusion-logo-tee",
+      "evil-eye-oversized-tee",
+      "evil-eye-acid-wash-oversized-tee",
+      "nazar-oversize-tee",
+      "cobalt-watercolour-tee",
+      "gaze-hoodie",
+      "nazar-beaded-bracelet",
+    ],
   },
   {
     id: "outerwear",
@@ -391,7 +521,14 @@ export const COLLECTIONS: Collection[] = [
     handle: "best-sellers",
     title: "Best Sellers",
     description: "The pieces our community returns to.",
-    productHandles: ["nazar-oversize-tee", "gaze-hoodie", "evil-eye-linen-shirt"],
+    productHandles: [
+      "urban-illusion-logo-tee",
+      "evil-eye-oversized-tee",
+      "evil-eye-acid-wash-oversized-tee",
+      "nazar-oversize-tee",
+      "gaze-hoodie",
+      "evil-eye-linen-shirt",
+    ],
   },
 ];
 

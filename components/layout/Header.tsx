@@ -64,17 +64,44 @@ export function Header() {
             : "bg-transparent",
         )}
       >
-        <div className="container-lux flex items-center gap-4 px-4 lg:px-8 h-16">
-          {/* Wordmark — links home */}
+        <div className="container-lux flex items-center gap-4 px-4 lg:px-8 h-20 lg:h-24">
+          {/* Brand lockup — eye mark + bigger wordmark, links home */}
           <Link
             href="/"
-            className="font-display-bold text-xl tracking-[-0.02em] text-navy mr-6 leading-none"
+            className="group flex items-center gap-3 mr-6"
             aria-label="Urban Illusion — home"
           >
-            URBAN
-            <span className="ml-1 font-mono text-[9px] tracking-[0.32em] uppercase align-middle text-navy/80">
-              Illusion
-            </span>
+            <svg
+              viewBox="0 0 200 200"
+              aria-hidden
+              className="size-8 sm:size-9 shrink-0 transition-transform duration-[var(--dur-base)] ease-[var(--ease-lux)] group-hover:rotate-[8deg]"
+            >
+              <defs>
+                <radialGradient id="hdr-cobalt" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#1E3A8A" />
+                  <stop offset="80%" stopColor="#0B1B3F" />
+                  <stop offset="100%" stopColor="#0B1B3F" />
+                </radialGradient>
+                <radialGradient id="hdr-iris" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FAF7F0" />
+                  <stop offset="60%" stopColor="#A8D0E0" />
+                  <stop offset="100%" stopColor="#5F8DA8" />
+                </radialGradient>
+              </defs>
+              <circle cx="100" cy="100" r="92" fill="url(#hdr-cobalt)" />
+              <circle cx="100" cy="100" r="60" fill="#EFE6D4" />
+              <circle cx="100" cy="100" r="42" fill="url(#hdr-iris)" />
+              <circle cx="100" cy="100" r="14" fill="#0A0A0A" />
+              <circle cx="93" cy="93" r="3" fill="#FAF7F0" opacity="0.85" />
+            </svg>
+            <div className="leading-[0.95] text-navy">
+              <span className="block font-display-bold text-2xl sm:text-[1.7rem] tracking-[-0.02em]">
+                URBAN
+              </span>
+              <span className="block font-mono text-[10px] sm:text-[11px] tracking-[0.42em] uppercase text-navy/85 mt-1">
+                Illusion
+              </span>
+            </div>
           </Link>
 
           {/* MegaMenu (lg+); mobile gets a hamburger sheet in Phase 1b */}

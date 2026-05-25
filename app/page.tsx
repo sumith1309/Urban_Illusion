@@ -32,7 +32,7 @@ export default async function Home() {
 
         <p className="eyebrow mb-8 sm:mb-10">Est. 2026 · The Nazar Edit</p>
 
-        <EvilEyeHero className="w-[min(80vw,520px)]" />
+        <EvilEyeHero className="w-[min(86vw,600px)]" />
 
         {/* Wordmark — server-painted text, SplitText reveals an overlay only after load */}
         <h1
