@@ -1,10 +1,12 @@
 /**
- * Seeded Urban Illusion catalog — 10 on-brand nazar-themed products spanning
- * every mega-menu category so no panel renders empty.
+ * Urban Illusion catalog — 10 on-brand nazar-themed products spanning every
+ * mega-menu category so no panel renders empty.
  *
- * Imagery references composited from the supplied brand reference set
- * (Images/*.png). Replace `image.url` paths with Shopify CDN URLs when live
- * credentials land — the adapter swap is transparent to consumers.
+ * Pricing (2026-05-25): flat across the whole catalog at ₹599 sale with a
+ * ₹799 compare-at strikethrough. No duplicate products — one set, one price.
+ *
+ * Replace image.url paths with Shopify CDN URLs when live credentials land;
+ * the adapter swap is transparent to consumers.
  */
 
 import type { Collection, Product } from "@/lib/shopify/types";
@@ -23,13 +25,18 @@ const mk = (
 
 const STD_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
+/* Flat catalog pricing — every product is sold at SALE_PRICE with COMPARE_AT
+   shown as a strikethrough. Change in one place if the line moves. */
+const SALE_PRICE     = 599;
+const COMPARE_AT     = 799;
+
 const variants = (
   product: string,
   colors: { name: string; hex: string }[],
-  basePrice: number,
+  basePrice: number = SALE_PRICE,
   sizes: string[] = STD_SIZES,
   invPerVariant = 8,
-  compareAtPrice?: number,
+  compareAtPrice: number = COMPARE_AT,
 ) =>
   colors.flatMap((c) =>
     sizes.map((s) => ({
@@ -40,11 +47,13 @@ const variants = (
       colorHex: c.hex,
       sku: `UI-${product.toUpperCase()}-${c.name.slice(0, 3).toUpperCase()}-${s}`,
       price: INR(basePrice),
-      ...(compareAtPrice !== undefined && { compareAtPrice: INR(compareAtPrice) }),
+      compareAtPrice: INR(compareAtPrice),
       available: true,
       inventoryQty: invPerVariant,
     })),
   );
+
+const SALE_RANGE = { min: INR(SALE_PRICE), max: INR(SALE_PRICE) };
 
 /* ─── Products ──────────────────────────────────────────────────────────── */
 
@@ -59,7 +68,7 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["tee", "nazar", "flagship", "new-in"],
     collections: ["the-nazar-edit", "new-in", "best-sellers"],
-    badges: ["new"],
+    badges: ["drop", "new"],
     media: [
       mk("/catalog/IMG_8095.png", "Nazar Oversize Tee — front"),
       mk("/catalog/IMG_8099.png", "Nazar Oversize Tee — worn"),
@@ -68,8 +77,8 @@ export const PRODUCTS: Product[] = [
     variants: variants("naz-tee", [
       { name: "Cream", hex: "#FAF7F0" },
       { name: "Charcoal", hex: "#1A1A1A" },
-    ], 2890),
-    priceRange: { min: INR(2890), max: INR(2890) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story:
         "The nazar — the watchful eye — is the oldest amulet in human record. We rendered it in jewelled cobalt over a hand-painted wash. The piece protects you the way it has protected travellers for three thousand years.",
@@ -80,7 +89,7 @@ export const PRODUCTS: Product[] = [
     },
     seo: {
       title: "Nazar Oversize Tee",
-      description: "The flagship evil-eye tee. Heavyweight cotton, watercolour print.",
+      description: "The flagship evil-eye tee. Heavyweight cotton, watercolour print. ₹599.",
     },
   },
   {
@@ -91,16 +100,16 @@ export const PRODUCTS: Product[] = [
       "Stonewashed mineral black with the jewelled nazar front-printed. Soft, lived-in hand. Each piece washes differently — no two are identical.",
     status: "active",
     tags: ["tee", "nazar", "acid-wash"],
-    collections: ["the-nazar-edit"],
-    badges: ["low-stock"],
+    collections: ["the-nazar-edit", "new-in", "best-sellers"],
+    badges: ["drop", "low-stock"],
     media: [
       mk("/catalog/PHOTO-2026-05-23-16-33-32.jpg", "Acid Wash Tee — front"),
       mk("/catalog/IMG_8752.png", "Acid Wash Tee — worn"),
     ],
     variants: variants("naz-acid", [
       { name: "Mineral Black", hex: "#1F1F1F" },
-    ], 3190, STD_SIZES, 3),
-    priceRange: { min: INR(3190), max: INR(3190) },
+    ], SALE_PRICE, STD_SIZES, 3),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Mineral-washed by hand in small batches. The wash deepens with wear.",
       materials: ["100% cotton", "260gsm heavyweight", "Acid mineral wash"],
@@ -110,7 +119,7 @@ export const PRODUCTS: Product[] = [
     },
     seo: {
       title: "Nazar Acid Wash Tee",
-      description: "Hand-washed mineral black tee with the evil-eye print.",
+      description: "Hand-washed mineral black tee with the evil-eye print. ₹599.",
     },
   },
   {
@@ -122,15 +131,15 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["tee", "watercolour"],
     collections: ["the-nazar-edit", "new-in"],
-    badges: ["new"],
+    badges: ["drop", "new"],
     media: [
       mk("/catalog/IMG_8174.png", "Cobalt Watercolour Tee — back"),
       mk("/catalog/IMG_8175.png", "Cobalt Watercolour Tee — worn"),
     ],
     variants: variants("wc-tee", [
       { name: "Paper", hex: "#FAF7F0" },
-    ], 2690),
-    priceRange: { min: INR(2690), max: INR(2690) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "The brushstroke without the eye. Quiet protection.",
       materials: ["100% organic cotton", "220gsm"],
@@ -138,7 +147,7 @@ export const PRODUCTS: Product[] = [
       fit: "Relaxed",
       origin: "Made in India",
     },
-    seo: { title: "Cobalt Watercolour Tee", description: "Abstract watercolour print." },
+    seo: { title: "Cobalt Watercolour Tee", description: "Abstract watercolour print. ₹599." },
   },
   {
     id: "botanical-crewneck",
@@ -149,15 +158,15 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["tee", "embroidered", "botanical"],
     collections: ["the-nazar-edit"],
-    badges: [],
+    badges: ["drop"],
     media: [
       mk("/catalog/IMG_8217.png", "Botanical Crewneck — back detail"),
     ],
     variants: variants("bot-crew", [
       { name: "Cream", hex: "#FAF7F0" },
       { name: "Sage", hex: "#9CAE9C" },
-    ], 3490),
-    priceRange: { min: INR(3490), max: INR(3490) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Embroidered by hand. The line is one continuous stitch.",
       materials: ["280gsm loopback", "Hand-embroidered chest"],
@@ -165,7 +174,7 @@ export const PRODUCTS: Product[] = [
       fit: "Regular",
       origin: "Made in India",
     },
-    seo: { title: "Botanical Crewneck", description: "Embroidered botanical sprig." },
+    seo: { title: "Botanical Crewneck", description: "Embroidered botanical sprig. ₹599." },
   },
 
   /* ── Shirts ── */
@@ -177,16 +186,16 @@ export const PRODUCTS: Product[] = [
       "Lightweight pure linen short-sleeve with the nazar printed full-back. For summer evenings and quiet rooms.",
     status: "active",
     tags: ["shirt", "linen", "nazar"],
-    collections: ["the-nazar-edit", "summer"],
-    badges: [],
+    collections: ["the-nazar-edit", "summer", "best-sellers"],
+    badges: ["drop"],
     media: [
       mk("/catalog/IMG_8174.png", "Evil Eye Linen Shirt — back"),
       mk("/catalog/IMG_8175.png", "Evil Eye Linen Shirt — full"),
     ],
     variants: variants("linen-1", [
       { name: "Paper", hex: "#FAF7F0" },
-    ], 4890),
-    priceRange: { min: INR(4890), max: INR(4890) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Pure linen, washed soft. The nazar holds you from the back.",
       materials: ["100% European flax linen", "Pearl buttons"],
@@ -194,7 +203,7 @@ export const PRODUCTS: Product[] = [
       fit: "Relaxed, camp collar",
       origin: "Made in India",
     },
-    seo: { title: "Evil Eye Linen Shirt", description: "Linen camp-collar with back nazar." },
+    seo: { title: "Evil Eye Linen Shirt", description: "Linen camp-collar with back nazar. ₹599." },
   },
   {
     id: "protection-linen-shirt",
@@ -205,15 +214,15 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["shirt", "linen", "overshirt"],
     collections: ["the-nazar-edit"],
-    badges: [],
+    badges: ["drop"],
     media: [
       mk("/catalog/IMG_8217.png", "Protection Linen Shirt — back"),
     ],
     variants: variants("linen-2", [
       { name: "Paper", hex: "#FAF7F0" },
       { name: "Stone", hex: "#9C9484" },
-    ], 5290),
-    priceRange: { min: INR(5290), max: INR(5290) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Cut for layering. The watercolour panel reads like a private mural.",
       materials: ["100% linen", "Mother-of-pearl buttons"],
@@ -221,7 +230,7 @@ export const PRODUCTS: Product[] = [
       fit: "Long, oversized",
       origin: "Made in India",
     },
-    seo: { title: "Protection Linen Shirt", description: "Long linen overshirt." },
+    seo: { title: "Protection Linen Shirt", description: "Long linen overshirt. ₹599." },
   },
 
   /* ── Outerwear ── */
@@ -233,8 +242,8 @@ export const PRODUCTS: Product[] = [
       "450gsm brushed cotton fleece. Tonal cobalt-on-navy nazar embroidered chest-left. The heaviest piece in the line.",
     status: "active",
     tags: ["outerwear", "hoodie", "nazar"],
-    collections: ["the-nazar-edit", "outerwear"],
-    badges: ["new"],
+    collections: ["the-nazar-edit", "outerwear", "new-in"],
+    badges: ["drop", "new"],
     media: [
       mk("/catalog/IMG_8574.png", "Gaze Hoodie — worn"),
       mk("/catalog/IMG_8581.png", "Gaze Hoodie — back"),
@@ -242,8 +251,8 @@ export const PRODUCTS: Product[] = [
     variants: variants("hood", [
       { name: "Royal Navy", hex: "#0B1B3F" },
       { name: "Mineral Black", hex: "#1F1F1F" },
-    ], 6890),
-    priceRange: { min: INR(6890), max: INR(6890) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Heavy. Quiet. The hood frames the gaze rather than hiding it.",
       materials: ["450gsm brushed cotton fleece", "Twill-tape drawcord"],
@@ -251,7 +260,7 @@ export const PRODUCTS: Product[] = [
       fit: "Oversized",
       origin: "Made in India",
     },
-    seo: { title: "Gaze Hoodie", description: "Heavyweight nazar hoodie." },
+    seo: { title: "Gaze Hoodie", description: "Heavyweight nazar hoodie. ₹599." },
   },
   {
     id: "talisman-overshirt",
@@ -268,8 +277,8 @@ export const PRODUCTS: Product[] = [
     ],
     variants: variants("oversh", [
       { name: "Paper", hex: "#FAF7F0" },
-    ], 7290),
-    priceRange: { min: INR(7290), max: INR(7290) },
+    ]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "Each overshirt is hand-printed. No two backs are identical.",
       materials: ["260gsm cotton twill", "Horn buttons"],
@@ -277,7 +286,7 @@ export const PRODUCTS: Product[] = [
       fit: "Oversized, drop shoulder",
       origin: "Made in India",
     },
-    seo: { title: "Talisman Overshirt", description: "Hand-printed watercolour overshirt." },
+    seo: { title: "Talisman Overshirt", description: "Hand-printed watercolour overshirt. ₹599." },
   },
 
   /* ── Bottoms ── */
@@ -290,15 +299,15 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["bottoms", "cargo"],
     collections: ["bottoms"],
-    badges: [],
+    badges: ["drop"],
     media: [
       mk("/catalog/IMG_8752.png", "Talisman Cargo — worn"),
     ],
     variants: variants("cargo", [
       { name: "Mineral Black", hex: "#1F1F1F" },
       { name: "Sand", hex: "#C9B58A" },
-    ], 5990, ["S", "M", "L", "XL", "XXL"]),
-    priceRange: { min: INR(5990), max: INR(5990) },
+    ], SALE_PRICE, ["S", "M", "L", "XL", "XXL"]),
+    priceRange: SALE_RANGE,
     metafields: {
       story: "The eye sits at the knee — exactly where you bend toward the world.",
       materials: ["320gsm cotton ripstop", "YKK hardware"],
@@ -306,7 +315,7 @@ export const PRODUCTS: Product[] = [
       fit: "Wide leg, mid rise",
       origin: "Made in India",
     },
-    seo: { title: "Talisman Cargo", description: "Wide-leg cargo with tonal nazar." },
+    seo: { title: "Talisman Cargo", description: "Wide-leg cargo with tonal nazar. ₹599." },
   },
 
   /* ── Accessories ── */
@@ -319,15 +328,15 @@ export const PRODUCTS: Product[] = [
     status: "active",
     tags: ["accessory", "amulet", "nazar"],
     collections: ["the-nazar-edit", "accessories"],
-    badges: ["new"],
+    badges: ["drop", "new"],
     media: [
       mk("/catalog/IMG_8241.png", "Nazar Beaded Bracelet"),
     ],
     variants: variants("brace", [
       { name: "Cobalt", hex: "#1E3A8A" },
       { name: "Pearl", hex: "#F2EFE6" },
-    ], 1490, ["ONE"], 25),
-    priceRange: { min: INR(1490), max: INR(1490) },
+    ], SALE_PRICE, ["ONE"], 25),
+    priceRange: SALE_RANGE,
     metafields: {
       story:
         "The original talisman. Strung by hand in Istanbul-style glass. The knot adjusts to any wrist; the protection adjusts to any wearer.",
@@ -336,124 +345,7 @@ export const PRODUCTS: Product[] = [
       fit: "One size — adjustable knot",
       origin: "Hand-strung",
     },
-    seo: { title: "Nazar Beaded Bracelet", description: "The literal evil-eye amulet." },
-  },
-
-  /* ── Launch Drop — ₹599 sale line ── */
-  {
-    id: "urban-illusion-logo-tee",
-    handle: "urban-illusion-logo-tee",
-    title: "Urban Illusion Logo Tee",
-    description:
-      "The signature evil-eye placed above the Urban Illusion wordmark, set in the house font. A cleaner, statement piece for everyday wear. Drop-shoulder oversize fit.",
-    status: "active",
-    tags: ["tee", "logo", "nazar", "launch-drop"],
-    collections: ["the-nazar-edit", "new-in", "best-sellers"],
-    badges: ["drop", "new"],
-    media: [
-      mk("/catalog/IMG_8105.png", "Urban Illusion Logo Tee — evil eye with brand wordmark"),
-    ],
-    variants: variants(
-      "ui-logo",
-      [
-        { name: "Cream", hex: "#FAF7F0" },
-        { name: "Charcoal", hex: "#1A1A1A" },
-      ],
-      599,
-      STD_SIZES,
-      12,
-      799,
-    ),
-    priceRange: { min: INR(599), max: INR(599) },
-    metafields: {
-      story:
-        "The eye and the name, in one piece. Set in the same custom serif used on every Urban Illusion mark, with the nazar resting above. The brand, signed by the wearer.",
-      materials: ["100% cotton", "220gsm jersey", "Water-based print"],
-      care: ["Cold wash inside out", "Tumble dry low", "Do not iron print"],
-      fit: "Oversized, drop shoulder",
-      origin: "Made in India",
-    },
-    seo: {
-      title: "Urban Illusion Logo Tee — Evil Eye + Wordmark",
-      description: "The signature evil-eye over the Urban Illusion wordmark. Oversized fit. Launch price ₹599.",
-    },
-  },
-  {
-    id: "evil-eye-oversized-tee",
-    handle: "evil-eye-oversized-tee",
-    title: "Evil Eye Oversized Tee",
-    description:
-      "The jewelled evil-eye printed front and centre on a heavyweight oversized tee. Boxy hem, drop shoulder, room to move.",
-    status: "active",
-    tags: ["tee", "nazar", "oversized", "launch-drop"],
-    collections: ["the-nazar-edit", "new-in", "best-sellers"],
-    badges: ["drop", "new"],
-    media: [
-      mk("/catalog/IMG_8095.png", "Evil Eye Oversized Tee — front"),
-      mk("/catalog/IMG_8099.png", "Evil Eye Oversized Tee — worn"),
-    ],
-    variants: variants(
-      "ee-oversized",
-      [
-        { name: "Cream", hex: "#FAF7F0" },
-        { name: "Black", hex: "#0E0E0E" },
-      ],
-      599,
-      STD_SIZES,
-      15,
-      799,
-    ),
-    priceRange: { min: INR(599), max: INR(599) },
-    metafields: {
-      story:
-        "The oldest amulet, sized for everyday. The print sits centred so the eye meets the world before you do.",
-      materials: ["100% cotton", "220gsm jersey", "Water-based print"],
-      care: ["Cold wash inside out", "Tumble dry low", "Do not iron print"],
-      fit: "Oversized, drop shoulder",
-      origin: "Made in India",
-    },
-    seo: {
-      title: "Evil Eye Oversized Tee",
-      description: "Heavyweight oversized tee with the signature evil-eye print. Launch price ₹599.",
-    },
-  },
-  {
-    id: "evil-eye-acid-wash-oversized-tee",
-    handle: "evil-eye-acid-wash-oversized-tee",
-    title: "Evil Eye Acid Wash Oversized Tee",
-    description:
-      "Stone-washed mineral black with the jewelled evil-eye printed front. Each piece washes differently — no two are identical. Soft, lived-in hand.",
-    status: "active",
-    tags: ["tee", "nazar", "acid-wash", "oversized", "launch-drop"],
-    collections: ["the-nazar-edit", "new-in", "best-sellers"],
-    badges: ["drop", "new"],
-    media: [
-      mk("/catalog/PHOTO-2026-05-23-16-33-32.jpg", "Evil Eye Acid Wash Oversized Tee — front"),
-      mk("/catalog/IMG_8752.png", "Evil Eye Acid Wash Oversized Tee — worn"),
-    ],
-    variants: variants(
-      "ee-acid-oversized",
-      [
-        { name: "Mineral Black", hex: "#1F1F1F" },
-      ],
-      599,
-      STD_SIZES,
-      10,
-      799,
-    ),
-    priceRange: { min: INR(599), max: INR(599) },
-    metafields: {
-      story:
-        "Mineral-washed by hand in small batches. The wash deepens with wear, the eye stays watching.",
-      materials: ["100% cotton", "220gsm jersey", "Acid mineral wash", "Water-based print"],
-      care: ["Cold wash with similar tones", "Air dry", "Do not iron print"],
-      fit: "Oversized, drop shoulder",
-      origin: "Made in India",
-    },
-    seo: {
-      title: "Evil Eye Acid Wash Oversized Tee",
-      description: "Hand-washed mineral black oversized tee with the evil-eye print. Launch price ₹599.",
-    },
+    seo: { title: "Nazar Beaded Bracelet", description: "The literal evil-eye amulet. ₹599." },
   },
 ];
 
@@ -467,9 +359,6 @@ export const COLLECTIONS: Collection[] = [
     description:
       "The flagship capsule. Every piece carries the eye — printed, embroidered, or rendered as the original amulet itself.",
     productHandles: [
-      "urban-illusion-logo-tee",
-      "evil-eye-oversized-tee",
-      "evil-eye-acid-wash-oversized-tee",
       "nazar-oversize-tee",
       "nazar-acid-wash-tee",
       "cobalt-watercolour-tee",
@@ -486,10 +375,8 @@ export const COLLECTIONS: Collection[] = [
     title: "New In",
     description: "Just landed.",
     productHandles: [
-      "urban-illusion-logo-tee",
-      "evil-eye-oversized-tee",
-      "evil-eye-acid-wash-oversized-tee",
       "nazar-oversize-tee",
+      "nazar-acid-wash-tee",
       "cobalt-watercolour-tee",
       "gaze-hoodie",
       "nazar-beaded-bracelet",
@@ -522,12 +409,10 @@ export const COLLECTIONS: Collection[] = [
     title: "Best Sellers",
     description: "The pieces our community returns to.",
     productHandles: [
-      "urban-illusion-logo-tee",
-      "evil-eye-oversized-tee",
-      "evil-eye-acid-wash-oversized-tee",
       "nazar-oversize-tee",
-      "gaze-hoodie",
+      "nazar-acid-wash-tee",
       "evil-eye-linen-shirt",
+      "gaze-hoodie",
     ],
   },
 ];

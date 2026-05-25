@@ -29,9 +29,9 @@ export function ProductCard({
     new Map(product.variants.map((v) => [v.color, v.colorHex] as const)).entries(),
   );
   const second = product.media[1] ?? product.media[0];
-  // Surface variant-level sale pricing on the card. All variants of a
-  // launch-drop product share the same compareAtPrice, so the first
-  // variant is a reliable source.
+  // Surface variant-level sale pricing on the card. With flat catalog
+  // pricing (every product ₹599 sale / ₹799 compare-at), variants[0]
+  // is a reliable source for the strikethrough value.
   const compareAt = product.variants[0]?.compareAtPrice;
 
   return (
