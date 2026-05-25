@@ -9,7 +9,11 @@ import { getAllProducts } from "@/lib/shopify";
 
 export default async function Home() {
   const products = await getAllProducts();
-  const featured = products.slice(0, 4);
+  // Surface the ₹599 launch drop first; backfill any remaining card slots
+  // with the premium line so the rail is always full.
+  const launchDrops = products.filter((p) => p.tags.includes("launch-drop"));
+  const otherProducts = products.filter((p) => !p.tags.includes("launch-drop"));
+  const featured = [...launchDrops, ...otherProducts].slice(0, 4);
 
   return (
     <main className="relative">
@@ -75,7 +79,7 @@ export default async function Home() {
       <section className="container-lux px-4 lg:px-8 section-pad">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <div>
-            <p className="eyebrow">The Nazar Edit · {products.length} pieces</p>
+            <p className="eyebrow">Launch Drop · ₹599 · Limited release</p>
             <h2 className="mt-3">First glances.</h2>
           </div>
           <Link

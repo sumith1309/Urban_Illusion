@@ -29,6 +29,10 @@ export function ProductCard({
     new Map(product.variants.map((v) => [v.color, v.colorHex] as const)).entries(),
   );
   const second = product.media[1] ?? product.media[0];
+  // Surface variant-level sale pricing on the card. All variants of a
+  // launch-drop product share the same compareAtPrice, so the first
+  // variant is a reliable source.
+  const compareAt = product.variants[0]?.compareAtPrice;
 
   return (
     <article
@@ -116,7 +120,7 @@ export function ProductCard({
           >
             {product.title}
           </Link>
-          <Price value={product.priceRange.min} />
+          <Price value={product.priceRange.min} compareAt={compareAt} />
         </div>
 
         {colours.length > 1 && (
