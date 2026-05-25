@@ -15,81 +15,49 @@ export default async function Home() {
 
   return (
     <main className="relative">
-      {/* ──────────────── HERO — full-bleed cinematic, premium-royal ────────
-          Refined 2026-05-25 from screenshot review:
-          • SVG watercolour blobs replaced with composed CSS radial gradients
-            (smoother, art-directable, infinite resolution, zero network).
-          • Eye is now the cleanly-cropped circular DISC (no splatter, no
-            asymmetry), wrapped in HeroEyeBadge with: cobalt outer aura,
-            inline SVG first-paint, raster crossfade-on-load, thin gold rim,
-            glossy top-left highlight overlay, and rising gold dust.
-          • URBAN wordmark gets a vertical navy gradient via background-clip
-            for royal-jewel depth without sacrificing legibility.
-
-          LCP contract preserved:
-            • Wordmark is the largest contentful element (~14vw glyphs vs
-              ~18vw eye disc) and uses background-clip:text — still paints
-              normal contentful glyphs. RE-VERIFY POST-DEPLOY.
-            • Eye raster lazy-loaded; inline SVG holds the slot for first paint.
-            • All decoration is CSS only — zero extra network requests. */}
+      {/* ──────────────── HERO — full-bleed corporate, brand-mark-as-statement
+          Refined 2026-05-25 per user direction:
+          • The master logo (URBAN ILLUSION + jewelled eye + watercolour as
+            originally art-directed) is the centrepiece, full-resolution,
+            with soft paper-shadow and a quiet warm halo. Nothing else.
+          • The previous gloss / gold rim / particles / multi-blob gradients
+            are removed — the user asked for "no extra, on point, corporate".
+          • No visible H1 wordmark below the logo — the logo already contains
+            the typeset URBAN ILLUSION. H1 stays sr-only for SEO / a11y. */}
       <section
         aria-labelledby="hero-title"
         className="relative w-full min-h-[100svh] flex flex-col items-center justify-between overflow-hidden isolate text-center"
       >
-        {/* Layer 1 — multi-stop ambient atmosphere. Five composed radial
-            gradients on a single bg layer: warm sand glow upper-left, cool
-            cobalt glow lower-right, soft pearl highlight upper-centre, deeper
-            cobalt vignette at the very edges, cream paper base. Replaces the
-            previous SVG blob washes which read as overscaled gradient circles.
-            Pure CSS — zero network, infinite smoothness, art-directable. */}
+        {/* Single clean ambient gradient — cream paper with a soft warm pool at
+            the top-centre and a near-invisible edge vignette. Replaces the
+            multi-blob composition. Corporate restraint over decorative noise. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-30 hero-atmos-shift"
+          className="pointer-events-none absolute inset-0 -z-30"
           style={{
             background:
               [
-                "radial-gradient(ellipse 60% 45% at 18% 22%, rgba(217,180,106,0.18) 0%, rgba(217,180,106,0.05) 45%, transparent 70%)",
-                "radial-gradient(ellipse 55% 50% at 82% 78%, rgba(30,58,138,0.16)  0%, rgba(30,58,138,0.04) 50%, transparent 75%)",
-                "radial-gradient(ellipse 70% 40% at 50% 8%,  rgba(250,247,240,1)   0%, rgba(250,247,240,0.6) 60%, transparent 90%)",
-                "radial-gradient(circle  120% at 50% 50%,    transparent 60%, rgba(11,27,63,0.06) 100%)",
+                "radial-gradient(ellipse 90% 50% at 50% 20%, rgba(250,247,240,1) 0%, rgba(243,235,211,0.85) 60%, transparent 100%)",
+                "radial-gradient(circle 110% at 50% 50%, transparent 65%, rgba(11,27,63,0.05) 100%)",
                 "linear-gradient(180deg, #FAF7F0 0%, #F3EBD3 100%)",
               ].join(", "),
           }}
         />
 
-        {/* Layer 2 — fine paper grain over the gradient. Inherits .grain-overlay
-            from globals.css but scoped to this section so it composites with
-            the atmosphere only. Already applied globally — this is a no-op
-            placeholder noting the intentional layering. */}
-
-        {/* Layer 3 — eyebrow (hidden in the md→lg dead zone where the audit
-            saw the eyebrow muddling against the brand block; reappears at lg
-            where there is room). */}
-        <div className="pt-[clamp(7rem,14svh,11rem)] pb-2 px-4">
+        {/* Top — quiet eyebrow, hidden in the md→lg cramped band. */}
+        <div className="pt-[clamp(6rem,12svh,9rem)] pb-2 px-4">
           <p className="eyebrow md:hidden lg:block">Est. 2026 · Limited Drops</p>
         </div>
 
-        {/* Layer 4 — the centrepiece: eye + wordmark stack. The wordmark must
-            remain the dominant visual element so Lighthouse keeps reporting it
-            as the LCP element (REVERIFY: see HeroEyeBadge.tsx for the contract). */}
+        {/* Centre — the master logo IS the brand statement. The artwork already
+            contains the URBAN ILLUSION wordmark, so we don't repeat it as a
+            visible H1; the H1 stays sr-only for SEO / a11y. */}
         <div className="relative flex flex-col items-center px-4">
-          <HeroEyeBadge className="w-[clamp(160px,18vw,260px)] mb-[clamp(-1.25rem,-2vw,-2rem)] z-10" />
-
-          <h1
-            id="hero-title"
-            className="font-display-bold leading-[0.85] tracking-[-0.025em] hero-wordmark"
-            style={{ fontSize: "clamp(3.75rem, 14vw, 12rem)" }}
-          >
-            URBAN
-            <span aria-hidden className="block font-mono font-medium uppercase text-ink mt-3 hero-wordmark-sub"
-                  style={{ fontSize: "clamp(0.9rem, 2.6vw, 1.6rem)", letterSpacing: "0.44em", marginLeft: "0.44em" }}>
-              Illusion
-            </span>
-            <span className="sr-only">Illusion</span>
-          </h1>
+          <HeroEyeBadge className="w-[clamp(280px,52vw,540px)]" />
+          <h1 id="hero-title" className="sr-only">Urban Illusion — Limited Drops</h1>
         </div>
 
-        {/* Layer 5 — tagline + CTAs anchored to the viewport bottom. */}
+        {/* Bottom — tagline + CTAs. */}
         <div className="flex flex-col items-center w-full pb-[clamp(2.5rem,6svh,4rem)] px-4">
           <p className="text-lead font-body max-w-[34ch] text-ink-soft">
             A jewelled evil-eye amulet, rendered as ready-to-wear. Limited drops.
@@ -113,35 +81,6 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-
-        {/* Very slow ambient hue-shift on the atmosphere + multi-stop navy
-            gradient on the wordmark for royal-jewel depth. The wordmark stays
-            the LCP element — gradient is applied via background-clip:text
-            which still paints normal contentful glyphs. Reduced-motion honoured. */}
-        <style>{`
-          @keyframes hero-atmos-shift {
-            0%, 100% { filter: hue-rotate(0deg) saturate(1); }
-            50%      { filter: hue-rotate(-4deg) saturate(1.04); }
-          }
-          .hero-atmos-shift { animation: hero-atmos-shift 22s ease-in-out infinite; will-change: filter; }
-
-          .hero-wordmark {
-            background: linear-gradient(180deg, #142A6E 0%, #0B1B3F 45%, #1E3A8A 100%);
-            -webkit-background-clip: text;
-                    background-clip: text;
-            -webkit-text-fill-color: transparent;
-                    color: transparent;
-            /* Fallback colour for browsers that don't support background-clip:text */
-          }
-          @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-            .hero-wordmark { color: var(--ui-navy); }
-          }
-          .hero-wordmark-sub { color: var(--ui-ink); }
-
-          @media (prefers-reduced-motion: reduce) {
-            .hero-atmos-shift { animation: none; }
-          }
-        `}</style>
       </section>
 
       {/* ──────────────── SCROLLYTELLING — Protection · Perception · Illusion ──────────────── */}
