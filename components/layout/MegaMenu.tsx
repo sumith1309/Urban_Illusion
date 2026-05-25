@@ -2,7 +2,7 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { COLLECTIONS, PRODUCT_BY_HANDLE } from "@/content/catalog";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +24,21 @@ const TOP_LEVEL = [
 
 export function MegaMenu() {
   const [openItem, setOpenItem] = useState<string>("");
+  const closeTimer = useRef<number | null>(null);
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimer();
+    // 240ms grace gives the user time to move from trigger → panel without
+    // a flicker, but a deliberate cursor-elsewhere closes the panel.
+    closeTimer.current = window.setTimeout(() => setOpenItem(""), 240);
+  };
 
   // Close the panel on scroll. We compare absolute movement against a small
   // threshold so a 1-2px nudge from the user shifting their cursor on a track-
@@ -32,12 +47,16 @@ export function MegaMenu() {
     let lastY = window.scrollY;
     const onScroll = () => {
       if (Math.abs(window.scrollY - lastY) > 24) {
+        clearCloseTimer();
         setOpenItem("");
       }
       lastY = window.scrollY;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearCloseTimer();
+    };
   }, []);
 
   return (
@@ -46,6 +65,8 @@ export function MegaMenu() {
       delayDuration={120}
       value={openItem}
       onValueChange={setOpenItem}
+      onMouseEnter={clearCloseTimer}
+      onMouseLeave={scheduleClose}
     >
       <NavigationMenu.List className="flex items-center gap-1">
         {TOP_LEVEL.map((item) => {

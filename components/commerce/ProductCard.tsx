@@ -57,14 +57,19 @@ export function ProductCard({
             </div>
           )}
 
-          {/* Hero image */}
+          {/* Hero image — crossfade + subtle scale on hover so the response
+              is perceptible even when the two media items are visually close
+              (audit M3: "implemented but invisible" still reads as a fail). */}
           <Image
             src={product.media[0].url}
             alt={product.media[0].altText}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-opacity duration-700 ease-[var(--ease-lux)]"
-            style={{ opacity: hovered ? 0 : 1 }}
+            className="object-cover transition-[opacity,transform] duration-[520ms] ease-[var(--ease-lux)]"
+            style={{
+              opacity: hovered ? 0 : 1,
+              transform: hovered ? "scale(1.035)" : "scale(1)",
+            }}
           />
           {/* Second image */}
           <Image
@@ -72,8 +77,11 @@ export function ProductCard({
             alt={second.altText}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-opacity duration-700 ease-[var(--ease-lux)]"
-            style={{ opacity: hovered ? 1 : 0 }}
+            className="object-cover transition-[opacity,transform] duration-[520ms] ease-[var(--ease-lux)]"
+            style={{
+              opacity: hovered ? 1 : 0,
+              transform: hovered ? "scale(1.035)" : "scale(1)",
+            }}
             aria-hidden={!hovered}
           />
 
