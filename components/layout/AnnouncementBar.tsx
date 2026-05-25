@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 
 const MESSAGES = [
   "Complimentary shipping over ₹5,000",
-  "The Nazar Edit — limited drop · est. 2026",
+  "Limited drop · est. 2026",
   "Hand-finished in small batches",
 ];
 

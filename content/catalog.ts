@@ -354,8 +354,8 @@ export const PRODUCTS: Product[] = [
 export const COLLECTIONS: Collection[] = [
   {
     id: "the-nazar-edit",
-    handle: "the-nazar-edit",
-    title: "The Nazar Edit",
+    handle: "the-nazar-edit", // URL slug retained so existing links don't 404
+    title: "The Edit",
     description:
       "The flagship capsule. Every piece carries the eye — printed, embroidered, or rendered as the original amulet itself.",
     productHandles: [

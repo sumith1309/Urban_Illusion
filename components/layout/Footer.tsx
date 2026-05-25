@@ -6,7 +6,7 @@ const COLS = [
     title: "Shop",
     links: [
       { label: "New In", href: "/collections/new-in" },
-      { label: "The Nazar Edit", href: "/collections/the-nazar-edit" },
+      { label: "The Edit",       href: "/collections/the-nazar-edit" },
       { label: "Outerwear", href: "/collections/outerwear" },
       { label: "Accessories", href: "/collections/accessories" },
     ],
@@ -45,7 +45,7 @@ export function Footer() {
       <div className="border-b border-paper/10">
         <div className="container-lux section-pad lg:py-20 grid lg:grid-cols-2 gap-10 lg:items-end">
           <div className="max-w-[28ch]">
-            <p className="eyebrow text-paper/60">The Nazar List</p>
+            <p className="eyebrow text-paper/60">The List</p>
             <p className="font-display text-5xl lg:text-6xl mt-4 leading-[0.95] text-paper">
               First look at the next drop.
             </p>

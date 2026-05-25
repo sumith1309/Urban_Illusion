@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 
 const TOP_LEVEL = [
   { label: "New In",         collection: "new-in" },
-  { label: "The Nazar Edit", collection: "the-nazar-edit" },
+  { label: "The Edit",       collection: "the-nazar-edit" },
   { label: "Outerwear",      collection: "outerwear" },
   { label: "Bottoms",        collection: "bottoms" },
   { label: "Accessories",    collection: "accessories" },

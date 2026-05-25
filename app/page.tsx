@@ -66,7 +66,7 @@ export default async function Home() {
             saw the eyebrow muddling against the brand block; reappears at lg
             where there is room). */}
         <div className="pt-[clamp(7rem,14svh,11rem)] pb-2 px-4">
-          <p className="eyebrow md:hidden lg:block">Est. 2026 · The Nazar Edit</p>
+          <p className="eyebrow md:hidden lg:block">Est. 2026 · Limited Drops</p>
         </div>
 
         {/* Layer 4 — the centrepiece: eye + wordmark stack. The wordmark must
@@ -156,7 +156,7 @@ export default async function Home() {
       <section className="container-lux px-4 lg:px-8 section-pad">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <div>
-            <p className="eyebrow">The Nazar Edit · ₹599 each · ₹799 strikethrough</p>
+            <p className="eyebrow">Limited Drop · ₹599 each · ₹799 strikethrough</p>
             <h2 className="mt-3">First glances.</h2>
           </div>
           <Link

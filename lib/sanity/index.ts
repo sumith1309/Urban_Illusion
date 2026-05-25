@@ -27,7 +27,7 @@ export type EditorialBlock =
 export const HOMEPAGE_BLOCKS: EditorialBlock[] = [
   {
     _type: "hero",
-    eyebrow: "Est. 2026 · The Nazar Edit",
+    eyebrow: "Est. 2026 · Limited Drops",
     title: "Urban Illusion",
     sub: "Protection. Perception. Illusion. — wearable amulets, made in small batches.",
     cta: { label: "Enter the shop", href: "/shop" },

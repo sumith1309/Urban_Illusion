@@ -23,7 +23,7 @@ const ENTRIES = [
     read: "8 min",
     title: "First drop · field notes.",
     blurb:
-      "Notes from the studio in the weeks before The Nazar Edit went live. What we got right, what we re-cut.",
+      "Notes from the studio in the weeks before the launch drop went live. What we got right, what we re-cut.",
   },
 ];
 
