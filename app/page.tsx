@@ -17,58 +17,52 @@ export default async function Home() {
 
   return (
     <main className="relative">
-      {/* ──────────────── HERO — full-bleed cinematic, LCP-safe ────────────────
-          Audit fix B3 (2026-05-25): the previous hero was a 640px-wide boxed
-          composition with ~130px of cream on each side — the single biggest
-          wasted moment on the page. This rewrite goes full-viewport
-          (100svh × 100vw) with layered watercolour washes, a centred eye
-          composition, and a dominant URBAN ILLUSION wordmark.
+      {/* ──────────────── HERO — full-bleed cinematic, premium-royal ────────
+          Refined 2026-05-25 from screenshot review:
+          • SVG watercolour blobs replaced with composed CSS radial gradients
+            (smoother, art-directable, infinite resolution, zero network).
+          • Eye is now the cleanly-cropped circular DISC (no splatter, no
+            asymmetry), wrapped in HeroEyeBadge with: cobalt outer aura,
+            inline SVG first-paint, raster crossfade-on-load, thin gold rim,
+            glossy top-left highlight overlay, and rising gold dust.
+          • URBAN wordmark gets a vertical navy gradient via background-clip
+            for royal-jewel depth without sacrificing legibility.
 
           LCP contract preserved:
-            • Wordmark is the largest contentful element (~14vw vs ~18vw eye)
-              — Lighthouse should still report it as LCP. RE-VERIFY POST-DEPLOY.
-            • Inline SVG eye paints first; the master raster crossfades in via
-              onLoad (HeroEyeBadge). No priority on the raster.
-            • Watercolour washes are ~1–2 KB SVG decorations — zero cost. */}
+            • Wordmark is the largest contentful element (~14vw glyphs vs
+              ~18vw eye disc) and uses background-clip:text — still paints
+              normal contentful glyphs. RE-VERIFY POST-DEPLOY.
+            • Eye raster lazy-loaded; inline SVG holds the slot for first paint.
+            • All decoration is CSS only — zero extra network requests. */}
       <section
         aria-labelledby="hero-title"
         className="relative w-full min-h-[100svh] flex flex-col items-center justify-between overflow-hidden isolate text-center"
       >
-        {/* Layer 1 — cream → ivory ambient gradient (always behind everything) */}
+        {/* Layer 1 — multi-stop ambient atmosphere. Five composed radial
+            gradients on a single bg layer: warm sand glow upper-left, cool
+            cobalt glow lower-right, soft pearl highlight upper-centre, deeper
+            cobalt vignette at the very edges, cream paper base. Replaces the
+            previous SVG blob washes which read as overscaled gradient circles.
+            Pure CSS — zero network, infinite smoothness, art-directable. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-30"
+          className="pointer-events-none absolute inset-0 -z-30 hero-atmos-shift"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 30%, rgba(250,247,240,1) 0%, rgba(239,230,212,0.55) 45%, rgba(168,208,224,0.15) 80%, rgba(11,27,63,0.06) 100%)",
+              [
+                "radial-gradient(ellipse 60% 45% at 18% 22%, rgba(217,180,106,0.18) 0%, rgba(217,180,106,0.05) 45%, transparent 70%)",
+                "radial-gradient(ellipse 55% 50% at 82% 78%, rgba(30,58,138,0.16)  0%, rgba(30,58,138,0.04) 50%, transparent 75%)",
+                "radial-gradient(ellipse 70% 40% at 50% 8%,  rgba(250,247,240,1)   0%, rgba(250,247,240,0.6) 60%, transparent 90%)",
+                "radial-gradient(circle  120% at 50% 50%,    transparent 60%, rgba(11,27,63,0.06) 100%)",
+                "linear-gradient(180deg, #FAF7F0 0%, #F3EBD3 100%)",
+              ].join(", "),
           }}
         />
 
-        {/* Layer 2 — asymmetric watercolour washes. Decorative SVGs (~1 KB each),
-            positioned art-directionally so the negative space frames the centre. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-20">
-          <Image
-            src="/brand/watercolour-sand.svg"
-            alt=""
-            width={800}
-            height={800}
-            className="absolute -top-[10%] -left-[14%] w-[58vw] max-w-[760px] h-auto opacity-90 hero-wash-a"
-          />
-          <Image
-            src="/brand/watercolour-navy.svg"
-            alt=""
-            width={800}
-            height={800}
-            className="absolute -bottom-[18%] -right-[10%] w-[52vw] max-w-[700px] h-auto opacity-80 hero-wash-b"
-          />
-          <Image
-            src="/brand/watercolour-sand.svg"
-            alt=""
-            width={400}
-            height={400}
-            className="absolute top-[12%] right-[6%] w-[20vw] max-w-[260px] h-auto opacity-60 hero-wash-c"
-          />
-        </div>
+        {/* Layer 2 — fine paper grain over the gradient. Inherits .grain-overlay
+            from globals.css but scoped to this section so it composites with
+            the atmosphere only. Already applied globally — this is a no-op
+            placeholder noting the intentional layering. */}
 
         {/* Layer 3 — eyebrow (hidden in the md→lg dead zone where the audit
             saw the eyebrow muddling against the brand block; reappears at lg
@@ -85,11 +79,11 @@ export default async function Home() {
 
           <h1
             id="hero-title"
-            className="font-display-bold text-navy leading-[0.85] tracking-[-0.025em]"
+            className="font-display-bold leading-[0.85] tracking-[-0.025em] hero-wordmark"
             style={{ fontSize: "clamp(3.75rem, 14vw, 12rem)" }}
           >
             URBAN
-            <span aria-hidden className="block font-mono font-medium uppercase text-ink mt-3"
+            <span aria-hidden className="block font-mono font-medium uppercase text-ink mt-3 hero-wordmark-sub"
                   style={{ fontSize: "clamp(0.9rem, 2.6vw, 1.6rem)", letterSpacing: "0.44em", marginLeft: "0.44em" }}>
               Illusion
             </span>
@@ -122,16 +116,32 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* CSS-only ambient drift on the watercolours. Reduced-motion honoured. */}
+        {/* Very slow ambient hue-shift on the atmosphere + multi-stop navy
+            gradient on the wordmark for royal-jewel depth. The wordmark stays
+            the LCP element — gradient is applied via background-clip:text
+            which still paints normal contentful glyphs. Reduced-motion honoured. */}
         <style>{`
-          @keyframes hero-wash-drift-a { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(8px,-6px,0); } }
-          @keyframes hero-wash-drift-b { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(-10px,8px,0); } }
-          @keyframes hero-wash-drift-c { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(4px,4px,0); } }
-          .hero-wash-a { animation: hero-wash-drift-a 18s ease-in-out infinite; }
-          .hero-wash-b { animation: hero-wash-drift-b 22s ease-in-out infinite; }
-          .hero-wash-c { animation: hero-wash-drift-c 14s ease-in-out infinite; }
+          @keyframes hero-atmos-shift {
+            0%, 100% { filter: hue-rotate(0deg) saturate(1); }
+            50%      { filter: hue-rotate(-4deg) saturate(1.04); }
+          }
+          .hero-atmos-shift { animation: hero-atmos-shift 22s ease-in-out infinite; will-change: filter; }
+
+          .hero-wordmark {
+            background: linear-gradient(180deg, #142A6E 0%, #0B1B3F 45%, #1E3A8A 100%);
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+                    color: transparent;
+            /* Fallback colour for browsers that don't support background-clip:text */
+          }
+          @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+            .hero-wordmark { color: var(--ui-navy); }
+          }
+          .hero-wordmark-sub { color: var(--ui-ink); }
+
           @media (prefers-reduced-motion: reduce) {
-            .hero-wash-a, .hero-wash-b, .hero-wash-c { animation: none; }
+            .hero-atmos-shift { animation: none; }
           }
         `}</style>
       </section>

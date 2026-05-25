@@ -73,13 +73,13 @@ export function Header() {
             aria-label="Urban Illusion — home"
           >
             <Image
-              src="/brand/eye-master@2x.png"
+              src="/brand/eye-disc@2x.png"
               alt=""
-              width={522}
-              height={522}
+              width={378}
+              height={378}
               sizes="(max-width: 640px) 44px, 56px"
               priority
-              className="size-11 sm:size-14 shrink-0 object-contain select-none transition-transform duration-[var(--dur-base)] ease-[var(--ease-lux)] group-hover:rotate-[6deg]"
+              className="size-11 sm:size-14 shrink-0 object-contain select-none transition-transform duration-[var(--dur-base)] ease-[var(--ease-lux)] group-hover:rotate-[6deg] drop-shadow-[0_2px_6px_rgba(11,27,63,0.18)]"
             />
             <div className="leading-[0.95] text-navy">
               <span className="block font-display-bold text-2xl sm:text-[1.7rem] tracking-[-0.02em]">
