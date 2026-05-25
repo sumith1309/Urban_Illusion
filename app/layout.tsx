@@ -101,11 +101,13 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} ${mono.variable}`}
     >
       <body className="min-h-dvh flex flex-col bg-paper text-ink">
+        {/* Skip-link — first focusable element for keyboard users. */}
+        <a href="#main" className="skip-link">Skip to content</a>
         <ScrollProgress />
         <SmoothScrollProvider>
           <Header />
           <CartHydrator />
-          <div className="flex-1">{children}</div>
+          <div id="main" className="flex-1">{children}</div>
           <Footer />
         </SmoothScrollProvider>
         <CartDrawer />

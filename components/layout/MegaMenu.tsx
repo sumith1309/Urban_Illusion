@@ -2,11 +2,17 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { COLLECTIONS, PRODUCT_BY_HANDLE } from "@/content/catalog";
 import { cn } from "@/lib/utils";
 
 /* Mega-menu — full-width image-led panels. Built on Radix NavigationMenu for
-   focus-trap, keyboard arrow nav, and ESC dismiss out of the box. */
+   focus-trap, keyboard arrow nav, and ESC dismiss out of the box.
+
+   Audit fix (2026-05-25): Radix doesn't close the panel on scroll, so it was
+   left floating over the scrollytelling section as users scrolled the home
+   page (BLOCKER B2). We control NavigationMenu.Root's `value` and clear it
+   on any meaningful scroll movement. */
 
 const TOP_LEVEL = [
   { label: "New In",         collection: "new-in" },
@@ -17,8 +23,30 @@ const TOP_LEVEL = [
 ];
 
 export function MegaMenu() {
+  const [openItem, setOpenItem] = useState<string>("");
+
+  // Close the panel on scroll. We compare absolute movement against a small
+  // threshold so a 1-2px nudge from the user shifting their cursor on a track-
+  // pad doesn't trigger a dismiss.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - lastY) > 24) {
+        setOpenItem("");
+      }
+      lastY = window.scrollY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <NavigationMenu.Root className="relative" delayDuration={120}>
+    <NavigationMenu.Root
+      className="relative"
+      delayDuration={120}
+      value={openItem}
+      onValueChange={setOpenItem}
+    >
       <NavigationMenu.List className="flex items-center gap-1">
         {TOP_LEVEL.map((item) => {
           const collection = COLLECTIONS.find((c) => c.handle === item.collection);
@@ -29,7 +57,7 @@ export function MegaMenu() {
             .filter(Boolean);
 
           return (
-            <NavigationMenu.Item key={item.label}>
+            <NavigationMenu.Item key={item.label} value={item.label}>
               <NavigationMenu.Trigger
                 className={cn(
                   "px-3 h-10 inline-flex items-center font-mono text-[11px] tracking-[0.24em] uppercase text-ink",

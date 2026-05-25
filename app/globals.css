@@ -140,11 +140,43 @@ h4 { font-size: var(--fs-h4); }
   color: var(--ui-paper);
 }
 
-/* Focus rings — accessible + on-brand */
-:focus-visible {
+/* Focus rings — accessible + on-brand. Per-element selectors so individual
+   components that set `outline: none` (Radix triggers, Tailwind reset) cannot
+   silently kill keyboard accessibility (WCAG 2.4.7). */
+:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible {
   outline: 2px solid var(--ui-cobalt);
   outline-offset: 3px;
   border-radius: var(--radius-xs);
+}
+
+/* Skip-link — keyboard users get a brand-coloured jump-to-content target. */
+.skip-link {
+  position: absolute;
+  top: -200px;
+  left: 1rem;
+  z-index: 100;
+  background: var(--ui-navy);
+  color: var(--ui-paper);
+  padding: 0.85rem 1.25rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-xs);
+  transition: top var(--dur-base) var(--ease-lux);
+}
+.skip-link:focus-visible {
+  top: 1rem;
 }
 
 /* =========================================================================

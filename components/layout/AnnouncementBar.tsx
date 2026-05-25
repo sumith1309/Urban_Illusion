@@ -24,7 +24,7 @@ export function AnnouncementBar() {
   if (dismissed) return null;
 
   return (
-    <div className="relative bg-ink text-paper">
+    <div className="relative bg-navy text-paper">
       <div className="container-lux flex items-center justify-center px-4 py-2">
         <p
           key={idx}
