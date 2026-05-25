@@ -32,7 +32,7 @@ export default async function Home() {
             • Watercolour washes are ~1–2 KB SVG decorations — zero cost. */}
       <section
         aria-labelledby="hero-title"
-        className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen min-h-[100svh] flex flex-col items-center justify-between overflow-hidden isolate text-center"
+        className="relative w-full min-h-[100svh] flex flex-col items-center justify-between overflow-hidden isolate text-center"
       >
         {/* Layer 1 — cream → ivory ambient gradient (always behind everything) */}
         <div
