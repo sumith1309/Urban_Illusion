@@ -32,23 +32,13 @@ export default async function Home() {
 
         <p className="eyebrow mb-8 sm:mb-10">Est. 2026 · The Nazar Edit</p>
 
-        <EvilEyeHero className="w-[min(86vw,600px)]" />
+        {/* The master artwork carries the brand — wordmark is baked into the art.
+            A visible H1 below would be redundant; we keep one for screen readers
+            and search engines only. */}
+        <EvilEyeHero className="w-[min(88vw,640px)]" />
+        <h1 id="hero-title" className="sr-only">Urban Illusion — The Nazar Edit</h1>
 
-        {/* Wordmark — server-painted text, SplitText reveals an overlay only after load */}
-        <h1
-          id="hero-title"
-          className="font-display-bold text-center leading-[0.85] tracking-[-0.025em] text-navy mt-6 sm:mt-8"
-          style={{ fontSize: "clamp(3.5rem, 14vw, 11rem)" }}
-        >
-          URBAN
-          <span aria-hidden className="block font-mono font-medium uppercase text-ink mt-3"
-                style={{ fontSize: "clamp(0.85rem, 2.5vw, 1.5rem)", letterSpacing: "0.42em", marginLeft: "0.42em" }}>
-            Illusion
-          </span>
-          <span className="sr-only">Illusion</span>
-        </h1>
-
-        <p className="text-lead font-body mt-10 max-w-[32ch] text-center text-ink-soft px-4">
+        <p className="text-lead font-body mt-12 max-w-[34ch] text-center text-ink-soft px-4">
           A jewelled evil-eye amulet, rendered as ready-to-wear. Limited drops.
         </p>
 
